@@ -1,0 +1,84 @@
+@layer base {
+  :root {
+    --background: 230 30% 11%;
+    --foreground: 60 14% 92%;
+    --card: 220 43% 5%;
+    --card-foreground: 60 14% 92%;
+    --popover: 220 60% 2%;
+    --popover-foreground: 60 14% 92%;
+    --primary: 187 100% 50%;
+    --primary-foreground: 220 60% 2%;
+    --secondary: 220 43% 5%;
+    --secondary-foreground: 60 14% 92%;
+    --muted: 220 43% 5%;
+    --muted-foreground: 240 3% 46%;
+    --accent: 187 100% 50%;
+    --accent-foreground: 220 60% 2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 187 100% 50% / 0.1;
+    --input: 187 100% 50% / 0.1;
+    --ring: 187 100% 50%;
+    --radius: 0px;
+    --sidebar-background: 220 60% 2%;
+    --sidebar-foreground: 60 14% 92%;
+    --sidebar-primary: 187 100% 50%;
+    --sidebar-primary-foreground: 220 60% 2%;
+    --sidebar-accent: 220 43% 5%;
+    --sidebar-accent-foreground: 60 14% 92%;
+    --sidebar-border: 187 100% 50% / 0.1;
+    --sidebar-ring: 187 100% 50%;
+    /* Gradient accent */
+    --gradient-accent: linear-gradient(135deg, #00e5ff 0%, #64ffda 100%);
+    --cyan: #00e5ff;
+    --cobalt: #0a1628;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-navy-deep text-cream font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (hover: hover) {
+    body,
+    a,
+    button {
+      cursor: none;
+    }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(900px 700px at 12% 18%, rgba(0, 229, 255, 0.15), transparent 55%),
+      radial-gradient(900px 700px at 88% 82%, rgba(100, 255, 218, 0.15), transparent 58%),
+      radial-gradient(700px 500px at 88% 16%, rgba(0, 229, 255, 0.10), transparent 60%);
+    opacity: 0.95;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -30%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.02;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    transform: rotate(-6deg);
+  }
+
+  ::selection {
+    background: rgba(0, 229, 255, 0.3);
+    color: #f0f0e6;
+  }
+}

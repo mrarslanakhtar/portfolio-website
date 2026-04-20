@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 const navLinks = [
-  { label: 'HERO', href: '#hero' },
+  { label: 'HOME', href: '#hero' },
   { label: 'ABOUT', href: '#about' },
-  { label: 'ZENGUARD', href: '#zenguard' },
-  { label: 'BUG BOUNTY', href: '#bugbounty' },
-  { label: 'EXPERIENCE', href: '#experience' },
-  { label: 'EDUCATION', href: '#education' },
-  { label: 'ADVISORY', href: '#advisory' },
-  { label: 'PAKCYBERSHIELD', href: '#pakcybershield' },
+  { label: 'PROJECTS', href: '#projects' },
+  { label: 'SKILLS', href: '#skills' },
+  { label: 'ZENGUARD-IDENTITY', href: '#zenguard' },
+  { label: 'WRITING', href: '#writing' },
   { label: 'CONTACT', href: '#contact' },
 ]
 
@@ -36,55 +35,53 @@ export default function Navigation() {
   return (
     <>
       <nav className="fixed top-4 left-0 right-0 z-50 pointer-events-none">
-        <div className="mx-auto w-full max-w-[1200px] px-4 md:px-8">
-          <div className="pointer-events-none mx-auto" style={{ maxWidth: scrolled ? 860 : 1040 }}>
+        <div className="mx-auto w-full max-w-[1440px] px-4 md:px-8">
+          <div className="pointer-events-none mx-auto" style={{ maxWidth: scrolled ? 1100 : 1300 }}>
             <div className="h-px bg-white/10" />
           </div>
           <div
-            className={`pointer-events-auto mx-auto flex items-center justify-between rounded-full border transition-all duration-300 ${
+            className={`pointer-events-auto mx-auto flex items-center justify-between gap-6 md:gap-10 rounded-full border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(255,255,255,0.25)] ${
               scrolled
-                ? 'bg-white/6 border-white/12 backdrop-blur-2xl shadow-[0_0_40px_rgba(0,212,255,0.10)]'
-                : 'bg-white/3 border-white/10 backdrop-blur-xl'
-            } ${scrolled ? 'h-12' : 'h-14'} ${scrolled ? 'px-4 md:px-5' : 'px-5 md:px-6'} `}
+                ? 'bg-white/90 border-white/40 backdrop-blur-2xl shadow-[0_4px_30px_rgba(255,255,255,0.2)]'
+                : 'bg-white/70 border-white/20 backdrop-blur-xl'
+            } ${scrolled ? 'h-14' : 'h-16'} ${scrolled ? 'px-6 md:px-8' : 'px-6 md:px-10'} `}
             style={{
-              maxWidth: scrolled ? 860 : 1040,
+              maxWidth: scrolled ? 1100 : 1300,
+              width: '100%',
             }}
           >
-            {/* Left: Identity */}
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                document.querySelector('#hero')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="font-mono text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-cream"
-            >
-              ARSLAN AKHTAR
-            </button>
-
-            {/* Center: Links (Desktop) */}
-            <div className="hidden lg:flex items-center gap-6">
+            {/* Links (Desktop) */}
+            <div className="hidden lg:flex items-center justify-between flex-1 pr-6 lg:pr-12">
               {navLinks.map((link) => (
-                <a
+                <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="group relative font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-cream/70 hover:text-cream transition-colors duration-300"
+                  whileHover={{ 
+                    scale: 1.18, 
+                    y: -5, 
+                    backgroundColor: 'var(--cyan)', 
+                    color: 'var(--background)',
+                    boxShadow: '0 8px 24px rgba(0, 229, 255, 0.5)'
+                  }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+                  className="relative font-mono text-[15px] font-extrabold uppercase tracking-[0.1em] text-navy-deep px-4 py-2 rounded-full transition-colors duration-300"
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-cyan transition-all duration-300 group-hover:w-full" />
-                </a>
+                </motion.a>
               ))}
             </div>
 
             {/* Right: Actions */}
             <div className="flex items-center gap-2">
               <a
-                href="https://www.linkedin.com/in/mrarslanakhtar/"
+                href="/cv/Arslan_CV_2026.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:inline-flex font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B0C10] bg-[#D4AF37] px-4 py-2 rounded-full hover:brightness-110 transition-all duration-300 shadow-[0_0_24px_rgba(212,175,55,0.25)]"
+                className="hidden md:inline-flex font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-navy-deep px-6 py-3 rounded-full transition-all duration-300 shadow-glow-border hover:shadow-[0_0_20px_rgba(0,229,255,0.5)]"
+                style={{ background: 'linear-gradient(135deg, #00e5ff 0%, #64ffda 100%)', backdropFilter: 'blur(10px)' }}
               >
-                LINKEDIN
+                My CV
               </a>
 
               {/* Mobile/Tablet Menu */}
@@ -119,12 +116,12 @@ export default function Navigation() {
           </a>
         ))}
         <a
-          href="https://www.linkedin.com/in/mrarslanakhtar/"
+          href="/cv/Arslan_CV_2026.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 font-mono text-sm font-medium uppercase tracking-[0.1em] text-cyan border border-cyan px-7 py-3 rounded-full hover:bg-cyan hover:text-navy-deep transition-all duration-300"
+          className="mt-4 font-mono text-sm font-bold uppercase tracking-[0.1em] text-navy-deep bg-cyan px-8 py-3.5 rounded-full shadow-[0_0_24px_rgba(0,212,255,0.4)] hover:shadow-[0_0_32px_rgba(0,212,255,0.6)] hover:bg-cyan-bright transition-all duration-300"
         >
-          LINKEDIN
+          My CV
         </a>
       </div>
     </>

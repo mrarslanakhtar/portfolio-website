@@ -4,6 +4,7 @@ import CountUp from 'react-countup'
 import { LayoutGroup, motion } from 'framer-motion'
 import ScrambleHeadline from '@/components/ScrambleHeadline'
 import SafeImage from '@/components/SafeImage'
+import Reticle from '@/components/Reticle'
 
 function ThreatMapBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -154,7 +155,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 decorative-grid pointer-events-none z-[1]" />
       <div className="absolute inset-0 z-[2] pointer-events-none" style={{ boxShadow: 'inset 0 0 220px rgba(5, 6, 11, 0.85)' }} />
 
-      <div className="relative z-[3] max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20 pt-28 md:pt-32 pb-20">
+      <div className="relative z-[3] w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32 pt-28 md:pt-32 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-[44%_56%] gap-10 lg:gap-14 items-center">
           {/* Left: Metrics + headline */}
           <div>
@@ -172,13 +173,13 @@ export default function HeroSection() {
             </div>
 
             <div className="hero-fade mt-6">
-              <p className="body-text max-w-[520px]">
+              <p className="body-text">
                 Offensive intelligence for identity and access control. High-signal reporting for executive action. Precision research across real production SSO trust chains.
               </p>
             </div>
 
             <div className="hero-fade mt-8 flex flex-wrap gap-3">
-              <a href="#bugbounty" className="btn-filled">
+              <a href="#projects" className="btn-filled">
                 BUG BOUNTY DATA
               </a>
               <a href="#contact" className="btn-outlined">
@@ -221,10 +222,10 @@ export default function HeroSection() {
                 <div className="absolute right-4 bottom-4 w-6 h-6 border-r border-b border-cyan/60" />
               </div>
 
-              <div className="pt-12">
+              <div className="pt-16 pb-10 flex justify-center">
                 <div className="relative">
-                  <div className="p-4">
-                    <div className="relative rounded-lg overflow-hidden ring-1 ring-cyan/35 shadow-[0_0_45px_rgba(0,212,255,0.18)]">
+                  <Reticle className="p-4 rounded-xl">
+                    <div className="relative rounded-lg overflow-hidden w-full max-w-[280px]">
                       <SafeImage
                         src="/images/hero-photo.jpg"
                         alt="Muhammad Arslan Akhtar — OSCP portrait"
@@ -232,8 +233,12 @@ export default function HeroSection() {
                         loading="eager"
                         fallbackText="MA"
                       />
+                      {/* Scanline overlay */}
+                      <div className="absolute inset-0 scanline-overlay pointer-events-none z-10" />
+                      {/* Cyan glow vignette */}
+                      <div className="absolute inset-0 pointer-events-none z-[11]" style={{ boxShadow: 'inset 0 0 80px rgba(0, 229, 255, 0.12)' }} />
                     </div>
-                  </div>
+                  </Reticle>
                   <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 120px rgba(5, 6, 11, 0.55)' }} />
                 </div>
               </div>

@@ -43,7 +43,7 @@ export default function SafeImage({ src, alt, className, loading, fallbackText }
     <img
       src={src}
       alt={alt}
-      className={className}
+      className={`object-cover object-center ${className || ''}`.trim()}
       loading={loading}
       onError={() => setFailed(true)}
     />

@@ -123,7 +123,7 @@ export default function ZenGuardSection() {
       {/* Decorative grid */}
       <div className="absolute inset-0 decorative-grid pointer-events-none z-[1]" />
 
-      <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20 z-[2]">
+      <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32 z-[2]">
         {/* Section label */}
         <ScrollRevealText mode="line" className="section-label mb-4">
           PRODUCT
@@ -155,7 +155,7 @@ export default function ZenGuardSection() {
             </ScrollRevealText>
 
             {/* Description */}
-            <ScrollRevealText mode="words" className="body-text max-w-[520px] mb-8" delay={0.2}>
+            <ScrollRevealText mode="words" className="body-text mb-8" delay={0.2}>
               ZenGuard is a proprietary adversarial reasoning engine trained on 500+ real-world Zendesk vulnerability records and 40+ detection rule patterns accumulated over six years of active research. Unlike conventional tools that check boxes against static signatures, ZenGuard simulates the cognitive process of an elite attacker — analyzing complex trust relationships and configuration logic in real-time.
             </ScrollRevealText>
 
@@ -185,20 +185,36 @@ export default function ZenGuardSection() {
               </a>
             </ScrollRevealText>
 
-            {/* PakCyberShield Note */}
-            <ScrollRevealText mode="line" className="mt-8 max-w-[520px]" delay={0.6}>
-              <div className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan mt-2 flex-shrink-0" />
-                <p className="text-[13px] text-[rgba(107,107,118,0.7)] italic leading-relaxed">
-                  ZenGuard powers PakCyberShield — South Asia's first indigenous Bug Bounty-as-a-Service platform, connecting vetted local security researchers with organizations across Pakistan, India, Bangladesh, and Sri Lanka.
+            {/* PakCyberShield Integrated Section */}
+            <ScrollRevealText mode="line" className="mt-10" delay={0.6}>
+              <div className="glass-card rounded-3xl p-6">
+                <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cyan mb-3">Platform • PakCyberShield</div>
+                <div className="font-mono text-base font-semibold uppercase tracking-[-0.01em] text-cream/90 mb-3">
+                  Bug Bounty-as-a-Service for South Asia
+                </div>
+                <p className="text-[13px] text-stone-muted leading-relaxed mb-5">
+                  PakCyberShield is powered by ZenGuard's adversarial reasoning and detection patterns — built to connect vetted local security researchers with organizations across Pakistan, India, Bangladesh, and Sri Lanka.
                 </p>
+                <ul className="space-y-2">
+                  {[
+                    'Researcher vetting + program integrity',
+                    'High-signal vulnerability triage and reporting',
+                    'Identity-centric attack surface modeling',
+                    'Repeatable detection pattern transfer',
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-3 text-[13px] leading-relaxed text-stone-muted">
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-cyan/80 flex-shrink-0" />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </ScrollRevealText>
           </div>
 
           {/* Right - Product Image */}
           <div ref={imageRef} className="flex items-center justify-center opacity-0">
-            <div className="relative w-full max-w-[520px]">
+            <div className="relative w-full">
               <div className="glass-card rounded-3xl p-8 md:p-10 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute -inset-24 opacity-[0.30] bg-[radial-gradient(circle_at_30%_25%,rgba(0,212,255,0.25),transparent_55%)]" />

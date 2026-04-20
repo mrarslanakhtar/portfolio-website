@@ -24,9 +24,9 @@ const contactMethods = [
 ]
 
 const platformLinks = [
-  { label: 'HackerOne', href: 'https://hackerone.com/' },
-  { label: 'BugCrowd', href: 'https://bugcrowd.com/' },
-  { label: 'Medium', href: 'https://medium.com/' },
+  { label: 'HackerOne', href: 'https://hackerone.com/mrarslanakhtar?type=user' },
+  { label: 'BugCrowd', href: 'https://bugcrowd.com/h/mrarslanakhtar' },
+  { label: 'Medium', href: 'https://medium.com/@mrarslanakhtar' },
 ]
 
 export default function ContactSection() {
@@ -81,22 +81,20 @@ export default function ContactSection() {
       className="relative py-[120px] pb-20 bg-navy-deep"
       id="contact"
     >
-      {/* Background gradient from ZenGuard section */}
-      <div className="absolute top-0 left-0 right-0 h-[200px] -translate-y-full" style={{ background: 'linear-gradient(to top, #02040a, #0a1628)' }} />
 
-      <div className="relative max-w-[800px] mx-auto px-6 md:px-12 text-center">
+      <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32 text-center">
         {/* Section label */}
         <ScrollRevealText mode="line" className="section-label mb-4">
           GET IN TOUCH
         </ScrollRevealText>
 
         {/* Heading */}
-        <ScrollRevealText mode="chars" as="h2" className="section-heading max-w-[600px] mx-auto mb-6">
+        <ScrollRevealText mode="chars" as="h2" className="section-heading mx-auto mb-6">
           LET'S BUILD SOMETHING SECURE
         </ScrollRevealText>
 
         {/* Subtitle */}
-        <ScrollRevealText mode="words" className="body-text max-w-[480px] mx-auto mb-12" delay={0.2}>
+        <ScrollRevealText mode="words" className="body-text mx-auto mb-12" delay={0.2}>
           Available for advisory engagements, security assessments, and strategic consulting with C-suite leadership.
         </ScrollRevealText>
 

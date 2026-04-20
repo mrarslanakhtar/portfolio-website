@@ -92,7 +92,11 @@ export default function ScrollRevealText({
 
       const inner = document.createElement('span')
       inner.style.display = 'inline-block'
-      inner.textContent = token
+      if (token === ' ') {
+        inner.innerHTML = '&nbsp;'
+      } else {
+        inner.textContent = token
+      }
       inner.style.willChange = 'transform'
 
       outer.appendChild(inner)

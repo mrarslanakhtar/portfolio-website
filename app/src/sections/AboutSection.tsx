@@ -56,14 +56,14 @@ export default function AboutSection() {
       {/* Faint decorative grid */}
       <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
-      <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20">
+      <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32">
         {/* Section label */}
         <ScrollRevealText mode="line" className="section-label mb-4">
           THE RESEARCHER
         </ScrollRevealText>
 
         {/* Heading */}
-        <ScrollRevealText mode="chars" as="h2" className="section-heading max-w-[600px] mb-16">
+        <ScrollRevealText mode="chars" as="h2" className="section-heading mb-16">
           FROM A RENTED APARTMENT TO C-SUITE CONVERSATIONS
         </ScrollRevealText>
 
@@ -87,21 +87,21 @@ export default function AboutSection() {
 
           {/* Right - Text */}
           <div className="flex flex-col justify-center">
-            <ScrollRevealText mode="words" className="body-text max-w-[520px] mb-6" delay={0.2}>
+            <ScrollRevealText mode="words" className="body-text mb-6" delay={0.2}>
               Six years ago, in a rented apartment in Islamabad, I watched a friend type quietly on a laptop late into the night. He was earning dollars through bug bounties. My curiosity pulled me in. That same evening, I memorized an SSO authentication bypass proof of concept — a vulnerability that would later define my entire career.
             </ScrollRevealText>
 
-            <ScrollRevealText mode="words" className="body-text max-w-[520px] mb-6" delay={0.3}>
+            <ScrollRevealText mode="words" className="body-text mb-6" delay={0.3}>
               Today, I hold a Top 1% global ranking on HackerOne with a 99th percentile Impact score. I've engaged 500+ live production deployments, documented 40+ distinct Broken Access Control patterns that no commercial scanner can detect, and commanded advisory fees of up to $25,000 per engagement. My reports have been used as teaching papers at the University of Waterloo.
             </ScrollRevealText>
 
-            <ScrollRevealText mode="words" className="body-text max-w-[520px] mb-8" delay={0.4}>
+            <ScrollRevealText mode="words" className="body-text mb-8" delay={0.4}>
               My dual foundation — a BS in Applied Mathematics and an MBA with distinction — gives me an unfair advantage. Mathematics gave me cryptography, computation, and probability. The MBA gave me the language of the boardroom. I don't just find vulnerabilities. I write advisories that CEOs and CISOs can act on in fifteen minutes.
             </ScrollRevealText>
 
             {/* Quote */}
             <div ref={quoteRef} className="border-l-2 border-cyan pl-6 mb-10 opacity-0">
-              <p className="font-display italic text-cream text-lg md:text-xl lg:text-2xl leading-relaxed max-w-[480px]">
+              <p className="font-display italic text-cream text-lg md:text-xl lg:text-2xl leading-relaxed">
                 "Companies do not pay hackers. They pay advisors."
               </p>
             </div>

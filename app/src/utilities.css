@@ -1,0 +1,99 @@
+@layer components {
+  .section-label { @apply font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone-muted; }
+  .section-heading {
+    @apply font-heading font-bold uppercase text-cream;
+    font-size: clamp(1.7rem, 4vw, 2.9rem); letter-spacing: 0.01em; line-height: 1.08;
+  }
+  .display-heading {
+    @apply font-heading font-extrabold uppercase text-cream;
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem); letter-spacing: 0.01em; line-height: 1.03;
+  }
+  .body-text {
+    @apply font-sans text-[17px] font-normal leading-[1.8];
+    color: #6b6b76;
+  }
+  .glass-card {
+    @apply relative bg-[#0D1117]/80 border border-white/10 backdrop-blur-xl p-8;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+  }
+  .btn-filled {
+    @apply inline-flex items-center justify-center font-mono text-[13px] font-semibold uppercase tracking-[0.12em] px-7 py-3.5 text-navy-deep border-none;
+    background: linear-gradient(135deg, #00e5ff 0%, #64ffda 100%);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-filled:hover {
+    background: linear-gradient(135deg, #64ffda 0%, #00e5ff 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.35);
+  }
+  .btn-outlined {
+    @apply inline-flex items-center justify-center font-mono text-[13px] font-semibold uppercase tracking-[0.12em] px-7 py-3.5 bg-transparent text-cream border border-[rgba(240,240,230,0.4)];
+    transition: all 0.3s ease;
+  }
+  .btn-outlined:hover {
+    border-color: #00e5ff;
+    color: #00e5ff;
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+    transform: translateY(-1px);
+  }
+  .animated-underline {
+    @apply relative inline-block text-cyan;
+  }
+  .animated-underline::after {
+    content: ''; @apply absolute bottom-0 left-0 h-px w-0;
+    background: linear-gradient(90deg, #00e5ff, #64ffda);
+    transition: width 0.3s ease;
+  }
+  .animated-underline:hover::after {
+    @apply w-full;
+  }
+  .decorative-grid {
+    background-image: linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: calc(var(--px, 0px) * 1) calc(var(--py, 0px) * 1), calc(var(--px, 0px) * 1) calc(var(--py, 0px) * 1);
+  }
+  .decorative-grid-faint {
+    background-image: linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: calc(var(--px, 0px) * 0.8) calc(var(--py, 0px) * 0.8), calc(var(--px, 0px) * 0.8) calc(var(--py, 0px) * 0.8);
+  }
+  .scanline-overlay {
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 229, 255, 0.03) 2px, rgba(0, 229, 255, 0.03) 4px);
+    animation: scanline-shift 8s linear infinite;
+  }
+  .text-glow-cyan {
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+  }
+  .grid-bg {
+    background-image: linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .glass {
+    background: rgba(11, 15, 26, 0.6);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    backdrop-filter: blur(12px);
+  }
+  .glow-cyan {
+    box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.4), 0 0 24px rgba(0, 229, 255, 0.3), 0 0 60px rgba(0, 229, 255, 0.14);
+  }
+  .corner-brackets { position: relative; }
+  .corner-brackets::before, .corner-brackets::after {
+    content: ""; position: absolute; width: 18px; height: 18px; border: 2px solid var(--cyan); pointer-events: none;
+  }
+  .corner-brackets::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+  .corner-brackets::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+}
+
+@layer utilities {
+  .text-shadow-hero { text-shadow: 0 2px 40px rgba(2, 4, 10, 0.8); }
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #00e5ff 0%, #64ffda 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

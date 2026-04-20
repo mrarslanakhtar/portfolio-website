@@ -39,8 +39,8 @@ export function useCustomCursor() {
     const onMouseUp = () => cursor.classList.remove('cursor-click')
 
     const animate = () => {
-      posRef.current.x += (targetRef.current.x - posRef.current.x) * 0.15
-      posRef.current.y += (targetRef.current.y - posRef.current.y) * 0.15
+      posRef.current.x += (targetRef.current.x - posRef.current.x) * 0.12
+      posRef.current.y += (targetRef.current.y - posRef.current.y) * 0.12
       cursor.style.transform = `translate3d(${posRef.current.x}px, ${posRef.current.y}px, 0)`
       rafRef.current = requestAnimationFrame(animate)
     }

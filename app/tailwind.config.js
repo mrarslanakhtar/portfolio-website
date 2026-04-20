@@ -49,15 +49,16 @@ module.exports = {
           ring: "hsl(var(--sidebar-ring))",
         },
         navy: {
-          DEFAULT: '#05060B',
-          deep: '#05060B',
-          surface: '#070915',
-          rich: '#07142A',
+          DEFAULT: '#111727',
+          deep: '#111727',
+          surface: '#1A233A',
+          rich: '#1E2943',
         },
         cyan: {
-          DEFAULT: '#00d4ff',
-          bright: '#33ddff',
-          glow: 'rgba(0, 212, 255, 0.25)',
+          DEFAULT: '#00e5ff',
+          bright: '#64ffda',
+          deep: '#00b8d4',
+          glow: 'rgba(0, 229, 255, 0.25)',
         },
         cream: {
           DEFAULT: '#f0f0e6',
@@ -69,6 +70,7 @@ module.exports = {
       fontFamily: {
         mono: ['"JetBrains Mono"', 'monospace'],
         sans: ['Inter', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
         display: ['"Playfair Display"', 'serif'],
       },
       borderRadius: {
@@ -80,9 +82,10 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        cyan: "0 0 20px rgba(0, 212, 255, 0.08)",
-        'cyan-lg': "0 0 60px rgba(0, 212, 255, 0.08)",
-        'btn-hover': "0 4px 20px rgba(0, 212, 255, 0.3)",
+        cyan: "0 0 20px rgba(0, 229, 255, 0.08)",
+        'cyan-lg': "0 0 60px rgba(0, 229, 255, 0.08)",
+        'btn-hover': "0 4px 20px rgba(0, 229, 255, 0.3)",
+        'glow-border': "0 0 12px rgba(0, 229, 255, 0.35), inset 0 0 12px rgba(0, 229, 255, 0.05)",
       },
       keyframes: {
         "accordion-down": {
