@@ -155,7 +155,7 @@ export default function ProjectsSection() {
 
   return (
     <section id="projects" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32">
         <div className="text-center mb-16">
@@ -189,9 +189,9 @@ export default function ProjectsSection() {
                     className={`glass-card rounded-3xl p-8 h-full ${p.featured ? 'lg:col-span-1 border-cyan/30 shadow-[0_0_30px_rgba(0,242,254,0.12)]' : ''}`}
                   >
                     <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cyan mb-3">{p.tag}</div>
-                    <div className="font-heading text-xl font-bold uppercase tracking-[-0.01em] text-cream/95 mb-4">
+                    <h3 className="font-heading text-xl font-bold uppercase tracking-[-0.01em] text-cream/95 mb-4">
                       {p.title}
-                    </div>
+                    </h3>
                     <p className="text-[14px] text-stone-muted leading-relaxed mb-6">{p.desc}</p>
                     <ul className="space-y-2">
                       {p.highlights.map((h) => (
@@ -232,9 +232,9 @@ export default function ProjectsSection() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div>
                         <div className="font-mono text-[12px] tracking-[0.12em] uppercase text-cyan">{it.org}</div>
-                        <div className="mt-2 font-heading text-lg font-bold text-cream/90 uppercase tracking-[-0.01em]">
+                        <h3 className="mt-2 font-heading text-lg font-bold text-cream/90 uppercase tracking-[-0.01em]">
                           {it.role}
-                        </div>
+                        </h3>
                       </div>
                       <div className="text-left md:text-right">
                         <div className="font-mono text-[12px] tracking-[0.12em] uppercase text-cream/55">Start</div>

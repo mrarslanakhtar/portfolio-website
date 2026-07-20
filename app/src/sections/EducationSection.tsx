@@ -16,7 +16,7 @@ const education = [
 export default function EducationSection() {
   return (
     <section id="education" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20">
         <div className="text-center mb-14">
@@ -35,9 +35,9 @@ export default function EducationSection() {
           {education.map((e) => (
             <div key={e.degree} className="glass-card rounded-3xl">
               <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cyan">Credential</div>
-              <div className="mt-2 font-mono text-xl font-semibold uppercase tracking-[-0.01em] text-cream/90">
+              <h3 className="mt-2 font-mono text-xl font-semibold uppercase tracking-[-0.01em] text-cream/90">
                 {e.degree}
-              </div>
+              </h3>
               <div className="mt-2 font-mono text-sm text-cream/70">{e.field}</div>
               <ul className="mt-6 space-y-2">
                 {e.notes.map((n) => (

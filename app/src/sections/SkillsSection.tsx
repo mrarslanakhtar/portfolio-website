@@ -67,7 +67,7 @@ function IcosahedronCanvas() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none hidden md:block" />
+  return <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none hidden md:block" />
 }
 
 const impactMetrics = [
@@ -139,7 +139,7 @@ export default function SkillsSection() {
 
   return (
     <section ref={sectionRef} id="skills" className="relative py-[120px] bg-navy-surface overflow-hidden">
-      <div className="absolute inset-0 decorative-grid pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid pointer-events-none" />
       <div className="absolute inset-0 z-0">
         <IcosahedronCanvas />
       </div>
@@ -173,7 +173,7 @@ export default function SkillsSection() {
                     {metric.value}
                   </div>
                   <div className="section-label mb-3">{metric.label}</div>
-                  <p className="text-[14px] text-[rgba(107,107,118,0.8)] leading-relaxed">
+                  <p className="text-[14px] text-stone-muted leading-relaxed">
                     {metric.desc}
                   </p>
                 </TiltCard>
@@ -200,9 +200,9 @@ export default function SkillsSection() {
                 <motion.div key={e.degree} variants={staggerItem}>
                   <TiltCard className="glass-card rounded-3xl h-full">
                     <div className="font-mono text-[12px] tracking-[0.12em] uppercase text-cyan">Credential</div>
-                    <div className="mt-2 font-heading text-2xl font-bold uppercase tracking-[-0.01em] text-cream/90">
+                    <h3 className="mt-2 font-heading text-2xl font-bold uppercase tracking-[-0.01em] text-cream/90">
                       {e.degree}
-                    </div>
+                    </h3>
                     <div className="mt-2 font-mono text-[15px] text-cream/70">{e.field}</div>
                     <ul className="mt-6 space-y-2">
                       {e.notes.map((n) => (
@@ -234,9 +234,9 @@ export default function SkillsSection() {
                 <motion.div key={a.title} variants={staggerItem}>
                   <TiltCard className="glass-card rounded-3xl h-full">
                     <div className="font-mono text-[12px] tracking-[0.12em] uppercase text-cyan">Module</div>
-                    <div className="mt-2 font-heading text-lg font-bold uppercase tracking-[-0.01em] text-cream/90">
+                    <h3 className="mt-2 font-heading text-lg font-bold uppercase tracking-[-0.01em] text-cream/90">
                       {a.title}
-                    </div>
+                    </h3>
                     <p className="mt-4 text-[14px] leading-relaxed text-stone-muted">{a.desc}</p>
                   </TiltCard>
                 </motion.div>

@@ -64,7 +64,7 @@ module.exports = {
           DEFAULT: '#f0f0e6',
         },
         stone: {
-          muted: '#6b6b76',
+          muted: '#8c8c99',
         },
       },
       fontFamily: {

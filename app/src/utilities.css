@@ -1,4 +1,24 @@
 @layer components {
+  .skip-link {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateY(-120%);
+    background: var(--cyan);
+    color: #05060b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    border-bottom-right-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
   .section-label { @apply font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone-muted; }
   .section-heading {
     @apply font-heading font-bold uppercase text-cream;
@@ -10,7 +30,7 @@
   }
   .body-text {
     @apply font-sans text-[17px] font-normal leading-[1.8];
-    color: #6b6b76;
+    color: #8c8c99;
   }
   .glass-card {
     @apply relative bg-[#0D1117]/80 border border-white/10 backdrop-blur-xl p-8;

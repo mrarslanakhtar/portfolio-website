@@ -1,22 +1,32 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, MotionConfig } from 'framer-motion'
 
 import Preloader from '@/components/Preloader'
 import CustomCursor from '@/components/CustomCursor'
 import Navigation from '@/components/Navigation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 import MouseParallax from '@/components/MouseParallax'
+import LazySection from '@/components/LazySection'
 import HeroSection from '@/sections/HeroSection'
 import AboutSection from '@/sections/AboutSection'
-import ProjectsSection from '@/sections/ProjectsSection'
-import SkillsSection from '@/sections/SkillsSection'
-import ZenGuardSection from '@/sections/ZenGuardSection'
 import WritingSection from '@/sections/WritingSection'
 import ContactSection from '@/sections/ContactSection'
 import FooterSection from '@/sections/FooterSection'
+
+// Below-fold sections are code-split and only fetched as they near the viewport.
+// This also defers three.js, which Skills and Impact import.
+const AdvisorySection = lazy(() => import('@/sections/AdvisorySection'))
+const ImpactSection = lazy(() => import('@/sections/ImpactSection'))
+const BugBountySection = lazy(() => import('@/sections/BugBountySection'))
+const ProjectsSection = lazy(() => import('@/sections/ProjectsSection'))
+const ZenGuardSection = lazy(() => import('@/sections/ZenGuardSection'))
+const ExperienceSection = lazy(() => import('@/sections/ExperienceSection'))
+const SkillsSection = lazy(() => import('@/sections/SkillsSection'))
+const EducationSection = lazy(() => import('@/sections/EducationSection'))
+const PakCyberShieldSection = lazy(() => import('@/sections/PakCyberShieldSection'))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -32,23 +42,23 @@ export default function App() {
     // Don't initialize Lenis until preloader is done
     if (loading) return
 
-    // Initialize Lenis smooth scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
-    })
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    lenisRef.current = lenis
-
-    // Connect Lenis to GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update)
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-
-    gsap.ticker.lagSmoothing(0)
+    // Skip smooth scroll entirely under reduced-motion; the browser's native
+    // scrolling is used instead. ScrollTrigger still works off native scroll.
+    let tickerFn: ((time: number) => void) | null = null
+    if (!prefersReducedMotion) {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 2,
+      })
+      lenisRef.current = lenis
+      lenis.on('scroll', ScrollTrigger.update)
+      tickerFn = (time: number) => lenis.raf(time * 1000)
+      gsap.ticker.add(tickerFn)
+      gsap.ticker.lagSmoothing(0)
+    }
 
     // Refresh ScrollTrigger after images load
     const images = document.querySelectorAll('img')
@@ -82,34 +92,43 @@ export default function App() {
 
     return () => {
       clearTimeout(timeout)
-      lenis.destroy()
+      if (tickerFn) gsap.ticker.remove(tickerFn)
+      lenisRef.current?.destroy()
+      lenisRef.current = null
     }
   }, [loading])
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <AnimatePresence mode="wait">
         {loading && <Preloader onComplete={handlePreloaderComplete} />}
       </AnimatePresence>
 
       {!loading && (
         <div className="relative z-[2]">
+          <a href="#main-content" className="skip-link">Skip to content</a>
           <ScrollProgressBar />
           <CustomCursor />
           <MouseParallax />
           <Navigation />
-          <main>
+          <main id="main-content" tabIndex={-1} className="focus:outline-none">
             <HeroSection />
             <AboutSection />
-            <ProjectsSection />
-            <SkillsSection />
-            <ZenGuardSection />
+            <LazySection><Suspense fallback={null}><AdvisorySection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><ImpactSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><BugBountySection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><ProjectsSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><ZenGuardSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><ExperienceSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><SkillsSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><EducationSection /></Suspense></LazySection>
+            <LazySection><Suspense fallback={null}><PakCyberShieldSection /></Suspense></LazySection>
             <WritingSection />
             <ContactSection />
             <FooterSection />
           </main>
         </div>
       )}
-    </>
+    </MotionConfig>
   )
 }

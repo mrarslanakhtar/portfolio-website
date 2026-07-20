@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrarslanakhtar.vercel.app/sitemap.xml

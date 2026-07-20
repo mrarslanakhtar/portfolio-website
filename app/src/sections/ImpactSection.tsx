@@ -87,7 +87,7 @@ function IcosahedronCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none hidden md:block"
+      aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none hidden md:block"
     />
   )
 }
@@ -99,14 +99,14 @@ const impactMetrics = [
     desc: 'High-severity findings across Fortune 500 organizations',
   },
   {
-    value: '500+',
-    label: 'ORGANIZATIONS ENGAGED',
-    desc: 'Including Adobe, Instacart, CompTIA, Wrike, Hootsuite',
+    value: '6 YRS',
+    label: 'RESEARCH DEPTH',
+    desc: 'Longitudinal SSO/IAM findings across Adobe, Instacart, CompTIA, Wrike, Hootsuite',
   },
   {
-    value: '99TH %',
-    label: 'HACKERONE IMPACT',
-    desc: 'Top 1% globally with Signal 5.00',
+    value: 'SIGNAL 5.00',
+    label: 'HACKERONE REPUTATION',
+    desc: 'Maximum signal rating — a sustained record of valid, high-quality submissions',
   },
   {
     value: '$25K',
@@ -165,7 +165,7 @@ export default function ImpactSection() {
       id="impact"
     >
       {/* Decorative grid */}
-      <div className="absolute inset-0 decorative-grid pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid pointer-events-none" />
 
       {/* 3D Icosahedron */}
       <div className="absolute inset-0 z-0">
@@ -201,7 +201,7 @@ export default function ImpactSection() {
                 {metric.value}
               </div>
               <div className="section-label mb-3">{metric.label}</div>
-              <p className="text-[13px] text-[rgba(107,107,118,0.8)] leading-relaxed">
+              <p className="text-[13px] text-stone-muted leading-relaxed">
                 {metric.desc}
               </p>
             </div>
