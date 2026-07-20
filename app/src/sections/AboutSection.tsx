@@ -54,7 +54,7 @@ export default function AboutSection() {
       id="about"
     >
       {/* Faint decorative grid */}
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32">
         {/* Section label */}
@@ -76,7 +76,11 @@ export default function AboutSection() {
             <div className="relative overflow-hidden group ml-1">
               <SafeImage
                 src="/images/about-photo.jpg"
-                alt="Muhammad Arslan Akhtar - Professional Portrait"
+                avifSrc="/images/about-photo.avif"
+                webpSrc="/images/about-photo.webp"
+                width={960}
+                height={1280}
+                alt="Muhammad Arslan Akhtar — portrait"
                 className="w-full aspect-[3/4] object-cover object-top grayscale-[20%] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-600"
                 loading="lazy"
                 fallbackText="MA"

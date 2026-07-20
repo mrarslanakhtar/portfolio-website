@@ -81,4 +81,26 @@
     background: rgba(0, 229, 255, 0.3);
     color: #f0f0e6;
   }
+
+  /* Visible keyboard focus for every interactive element (nav links, CTAs, buttons). */
+  :focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+/* Honor reduced-motion at the CSS layer too: stop ambient/keyframe animation,
+   smooth-scroll, and long transitions (JS motion is gated separately in App/CustomCursor). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

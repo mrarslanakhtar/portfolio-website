@@ -6,6 +6,10 @@ type SafeImageProps = {
   className?: string
   loading?: 'eager' | 'lazy'
   fallbackText?: string
+  width?: number
+  height?: number
+  avifSrc?: string
+  webpSrc?: string
 }
 
 function initialsFrom(alt: string) {
@@ -18,7 +22,17 @@ function initialsFrom(alt: string) {
   return `${a}${b}`.toUpperCase()
 }
 
-export default function SafeImage({ src, alt, className, loading, fallbackText }: SafeImageProps) {
+export default function SafeImage({
+  src,
+  alt,
+  className,
+  loading,
+  fallbackText,
+  width,
+  height,
+  avifSrc,
+  webpSrc,
+}: SafeImageProps) {
   const [failed, setFailed] = useState(false)
   const initials = useMemo(() => fallbackText ?? initialsFrom(alt), [alt, fallbackText])
 
@@ -40,13 +54,18 @@ export default function SafeImage({ src, alt, className, loading, fallbackText }
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={`object-cover object-center ${className || ''}`.trim()}
-      loading={loading}
-      onError={() => setFailed(true)}
-    />
+    <picture className="contents">
+      {avifSrc ? <source srcSet={avifSrc} type="image/avif" /> : null}
+      {webpSrc ? <source srcSet={webpSrc} type="image/webp" /> : null}
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className={`object-cover object-center ${className || ''}`.trim()}
+        loading={loading}
+        onError={() => setFailed(true)}
+      />
+    </picture>
   )
 }
-

@@ -121,7 +121,7 @@ export default function ZenGuardSection() {
       </div>
 
       {/* Decorative grid */}
-      <div className="absolute inset-0 decorative-grid pointer-events-none z-[1]" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid pointer-events-none z-[1]" />
 
       <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32 z-[2]">
         {/* Section label */}
@@ -167,7 +167,7 @@ export default function ZenGuardSection() {
                   className="feature-item border-l border-[rgba(0,212,255,0.15)] pl-4 hover:border-[rgba(0,212,255,0.4)] transition-colors duration-300 opacity-0"
                 >
                   <span className="font-mono text-[11px] font-bold text-cyan tracking-[0.05em]">{f.num}</span>
-                  <h4 className="font-mono text-sm font-semibold text-cream mt-1">{f.title}</h4>
+                  <h3 className="font-mono text-sm font-semibold text-cream mt-1">{f.title}</h3>
                   <p className="text-[13px] text-stone-muted leading-relaxed mt-1">{f.desc}</p>
                 </div>
               ))}
@@ -218,7 +218,7 @@ export default function ZenGuardSection() {
               <div className="glass-card rounded-3xl p-8 md:p-10 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute -inset-24 opacity-[0.30] bg-[radial-gradient(circle_at_30%_25%,rgba(0,212,255,0.25),transparent_55%)]" />
-                  <div className="absolute inset-0 decorative-grid-faint opacity-60" />
+                  <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint opacity-60" />
                 </div>
 
                 <div className="relative">
@@ -234,9 +234,9 @@ export default function ZenGuardSection() {
                       fallbackText="ZG"
                     />
                     <div>
-                      <div className="font-mono text-lg font-semibold uppercase tracking-[-0.01em] text-cream/90">
+                      <h3 className="font-mono text-lg font-semibold uppercase tracking-[-0.01em] text-cream/90">
                         Shield + Fingerprint Identity
-                      </div>
+                      </h3>
                       <div className="mt-1 font-mono text-[12px] text-cyan/90">
                         Cognitive attacker simulation • SSO trust-chain exploitability
                       </div>

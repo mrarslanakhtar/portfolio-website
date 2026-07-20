@@ -77,7 +77,7 @@ export default function ExperienceSection() {
 
   return (
     <section ref={rootRef} id="experience" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20">
         <div className="text-center mb-16">
@@ -117,9 +117,9 @@ export default function ExperienceSection() {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                   <div>
                     <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cyan">{it.org}</div>
-                    <div className="mt-2 font-mono text-lg md:text-xl font-semibold text-cream/90 uppercase tracking-[-0.01em]">
+                    <h3 className="mt-2 font-mono text-lg md:text-xl font-semibold text-cream/90 uppercase tracking-[-0.01em]">
                       {it.role}
-                    </div>
+                    </h3>
                   </div>
                   <div className="text-left md:text-right">
                     <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cream/55">Start</div>

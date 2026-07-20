@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const navLinks = [
   { label: 'HOME', href: '#hero' },
   { label: 'ABOUT', href: '#about' },
+  { label: 'ADVISORY', href: '#advisory' },
+  { label: 'IMPACT', href: '#impact' },
   { label: 'PROJECTS', href: '#projects' },
-  { label: 'SKILLS', href: '#skills' },
-  { label: 'ZENGUARD-IDENTITY', href: '#zenguard' },
+  { label: 'ZENGUARD', href: '#zenguard' },
   { label: 'WRITING', href: '#writing' },
   { label: 'CONTACT', href: '#contact' },
 ]
@@ -14,6 +15,8 @@ const navLinks = [
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => {
@@ -22,6 +25,43 @@ export default function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Mobile menu: trap focus while open, close on Escape, return focus on close.
+  useEffect(() => {
+    if (!menuOpen) return
+    const menu = menuRef.current
+    if (!menu) return
+    const toggle = toggleRef.current
+
+    const focusables = Array.from(
+      menu.querySelectorAll<HTMLElement>('a[href], button')
+    )
+    focusables[0]?.focus()
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false)
+        return
+      }
+      if (e.key === 'Tab' && focusables.length > 0) {
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      toggle?.focus()
+    }
+  }, [menuOpen])
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
@@ -86,9 +126,12 @@ export default function Navigation() {
 
               {/* Mobile/Tablet Menu */}
               <button
+                ref={toggleRef}
                 className="lg:hidden inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-xl w-10 h-10"
                 onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="Toggle menu"
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
               >
                 <span className="sr-only">Toggle menu</span>
                 <span className={`block w-5 h-px bg-cream transition-transform duration-300 ${menuOpen ? 'rotate-45 translate-y-[3.5px]' : ''}`} />
@@ -101,6 +144,9 @@ export default function Navigation() {
 
       {/* Mobile Menu Overlay */}
       <div
+        id="mobile-menu"
+        ref={menuRef}
+        inert={!menuOpen}
         className={`fixed inset-0 z-40 bg-navy-deep/95 backdrop-blur-xl flex flex-col items-center justify-center gap-7 transition-opacity duration-300 lg:hidden ${
           menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}

@@ -14,7 +14,7 @@ export default function FooterSection() {
             >
               mrarslan5156@gmail.com
             </a>
-            <div className="font-mono text-[11px] tracking-[0.14em] uppercase text-cream/45">
+            <div className="font-mono text-[11px] tracking-[0.14em] uppercase text-cream/55">
               © {new Date().getFullYear()} Muhammad Arslan Akhtar
             </div>
           </div>

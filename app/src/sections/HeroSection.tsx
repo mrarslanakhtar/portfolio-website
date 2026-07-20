@@ -77,7 +77,7 @@ function ThreatMapBackground() {
     return () => window.removeEventListener('resize', resize)
   }, [])
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-70" />
+  return <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 opacity-70" />
 }
 
 type Metric = {
@@ -149,11 +149,11 @@ export default function HeroSection() {
 
   return (
     <section ref={heroRef} className="relative min-h-[100dvh] overflow-hidden bg-navy-deep" id="hero">
-      <div className="absolute inset-0 z-[0]">
+      <div className="absolute inset-0 z-[0]" aria-hidden="true">
         <ThreatMapBackground />
       </div>
-      <div className="absolute inset-0 decorative-grid pointer-events-none z-[1]" />
-      <div className="absolute inset-0 z-[2] pointer-events-none" style={{ boxShadow: 'inset 0 0 220px rgba(5, 6, 11, 0.85)' }} />
+      <div className="absolute inset-0 decorative-grid pointer-events-none z-[1]" aria-hidden="true" />
+      <div className="absolute inset-0 z-[2] pointer-events-none" aria-hidden="true" style={{ boxShadow: 'inset 0 0 220px rgba(5, 6, 11, 0.85)' }} />
 
       <div className="relative z-[3] w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32 pt-28 md:pt-32 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-[44%_56%] gap-10 lg:gap-14 items-center">
@@ -161,7 +161,7 @@ export default function HeroSection() {
           <div>
             <div className="hero-fade">
               <div className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-cyan">
-                Elite Offensive Security Researcher • Top 1% HackerOne
+                Muhammad Arslan Akhtar • Top 1% HackerOne
               </div>
             </div>
 
@@ -179,7 +179,7 @@ export default function HeroSection() {
             </div>
 
             <div className="hero-fade mt-8 flex flex-wrap gap-3">
-              <a href="#projects" className="btn-filled">
+              <a href="#bugbounty" className="btn-filled">
                 BUG BOUNTY DATA
               </a>
               <a href="#contact" className="btn-outlined">
@@ -228,13 +228,17 @@ export default function HeroSection() {
                     <div className="relative rounded-lg overflow-hidden w-full max-w-[280px]">
                       <SafeImage
                         src="/images/hero-photo.jpg"
-                        alt="Muhammad Arslan Akhtar — OSCP portrait"
+                        avifSrc="/images/hero-photo.avif"
+                        webpSrc="/images/hero-photo.webp"
+                        width={560}
+                        height={700}
+                        alt="Muhammad Arslan Akhtar at his desk with a live security threat-map dashboard on screen"
                         className="w-full aspect-[4/5] object-cover object-top"
                         loading="eager"
                         fallbackText="MA"
                       />
                       {/* Scanline overlay */}
-                      <div className="absolute inset-0 scanline-overlay pointer-events-none z-10" />
+                      <div aria-hidden="true" className="absolute inset-0 scanline-overlay pointer-events-none z-10" />
                       {/* Cyan glow vignette */}
                       <div className="absolute inset-0 pointer-events-none z-[11]" style={{ boxShadow: 'inset 0 0 80px rgba(0, 229, 255, 0.12)' }} />
                     </div>

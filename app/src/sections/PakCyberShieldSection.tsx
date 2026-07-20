@@ -3,7 +3,7 @@ import ScrollRevealText from '@/components/ScrollRevealText'
 export default function PakCyberShieldSection() {
   return (
     <section id="pakcybershield" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">

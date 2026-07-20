@@ -22,7 +22,7 @@ const advisory = [
 export default function AdvisorySection() {
   return (
     <section id="advisory" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 lg:px-20">
         <div className="text-center mb-14">
@@ -33,8 +33,9 @@ export default function AdvisorySection() {
             OFFENSIVE INTELLIGENCE → EXECUTIVE DECISIONS
           </ScrollRevealText>
           <ScrollRevealText mode="words" className="body-text max-w-[760px] mx-auto" delay={0.15}>
-            This section absorbs the former scope/compliance framing into a single operating model: exploit reasoning, detection design,
-            and boardroom-legible reporting.
+            Most security reports get read once and filed away. These engagements turn proven exploits into decisions your
+            leadership can act on in a single sitting — what an attacker can actually reach, what it puts at risk, and the
+            order in which to fix it.
           </ScrollRevealText>
         </div>
 
@@ -42,9 +43,9 @@ export default function AdvisorySection() {
           {advisory.map((a) => (
             <div key={a.title} className="glass-card rounded-3xl">
               <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cyan">Module</div>
-              <div className="mt-2 font-mono text-lg font-semibold uppercase tracking-[-0.01em] text-cream/90">
+              <h3 className="mt-2 font-mono text-lg font-semibold uppercase tracking-[-0.01em] text-cream/90">
                 {a.title}
-              </div>
+              </h3>
               <p className="mt-4 text-[13px] leading-relaxed text-stone-muted">{a.desc}</p>
             </div>
           ))}

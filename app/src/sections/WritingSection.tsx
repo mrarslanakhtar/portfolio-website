@@ -77,7 +77,7 @@ export default function WritingSection() {
 
   return (
     <section id="writing" className="relative py-[120px] bg-navy-deep">
-      <div className="absolute inset-0 decorative-grid-faint pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 decorative-grid-faint pointer-events-none" />
 
       <div className="relative w-full mx-auto px-6 md:px-12 lg:px-20 xl:px-32">
         <div className="text-left mb-8">
