@@ -11,7 +11,7 @@ type LazySectionProps = {
 /**
  * Defers mounting (and therefore the dynamic import) of its children until the
  * placeholder nears the viewport. Combined with React.lazy children this keeps
- * below-fold section chunks — and heavy deps like three.js — off the critical path.
+ * below-fold section chunks and their dependencies off the critical path.
  */
 export default function LazySection({
   children,

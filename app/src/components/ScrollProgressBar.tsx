@@ -26,11 +26,11 @@ export default function ScrollProgressBar() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-transparent">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-px bg-transparent" aria-hidden="true">
       <div
         ref={barRef}
-        className="h-full w-full origin-left bg-cyan"
-        style={{ transform: 'scaleX(0)', boxShadow: '0 0 18px rgba(0,212,255,0.35)' }}
+        className="h-full w-full origin-left bg-cyan/70"
+        style={{ transform: 'scaleX(0)' }}
       />
     </div>
   )

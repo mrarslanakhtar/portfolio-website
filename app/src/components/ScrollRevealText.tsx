@@ -17,9 +17,12 @@ export default function ScrollRevealText({
   mode = 'words',
   delay = 0,
   className = '',
-  as: Tag = 'div',
+  as: asTag = 'div',
 }: ScrollRevealTextProps) {
   const ref = useRef<HTMLElement>(null)
+  // Rendering a dynamic intrinsic tag: widen to ElementType so the shared
+  // HTMLElement ref type-checks against every allowed tag without casting to any.
+  const Tag = asTag as React.ElementType
 
   useEffect(() => {
     const el = ref.current
@@ -137,7 +140,7 @@ export default function ScrollRevealText({
   }, [mode, delay])
 
   return (
-    <Tag ref={ref as any} className={className}>
+    <Tag ref={ref} className={className}>
       {children}
     </Tag>
   )
