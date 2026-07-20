@@ -33,7 +33,7 @@ export default function AnimatedStat({ end, suffix = '', prefix = '', label, dur
 
   return (
     <div ref={ref} className="text-center md:text-left">
-      <div className="font-mono font-bold text-cyan" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.02em' }}>
+      <div className="font-display font-medium text-cream" style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
         {inView ? (
           <CountUp
             end={end}
@@ -50,7 +50,7 @@ export default function AnimatedStat({ end, suffix = '', prefix = '', label, dur
           <span>{prefix}0{suffix}</span>
         )}
       </div>
-      <div className="section-label mt-2">{label}</div>
+      <div className="data-label mt-2">{label}</div>
     </div>
   )
 }

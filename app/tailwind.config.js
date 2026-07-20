@@ -5,123 +5,65 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        // Graphite/navy base — deeper and calmer than the old neon-navy.
+        graphite: {
+          DEFAULT: '#0F1420',
+          deep: '#0B0F18',
+          surface: '#161C2B',
+          raised: '#1E2740',
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
-          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+        // Kept for backward-compatible class names; mapped onto the graphite base.
         navy: {
-          DEFAULT: '#111727',
-          deep: '#111727',
-          surface: '#1A233A',
-          rich: '#1E2943',
+          DEFAULT: '#0F1420',
+          deep: '#0F1420',
+          surface: '#161C2B',
+          rich: '#1E2740',
         },
+        // Cyan is a *signal* color: links, active state, data emphasis — used sparingly.
         cyan: {
-          DEFAULT: '#00e5ff',
-          bright: '#64ffda',
-          deep: '#00b8d4',
-          glow: 'rgba(0, 229, 255, 0.25)',
+          DEFAULT: '#00E5FF',
+          deep: '#00B8D4',
+        },
+        // Restrained warm secondary — hairline rules, section numerals, marks only.
+        brass: {
+          DEFAULT: '#B99A6B',
+          deep: '#8C7350',
         },
         cream: {
-          DEFAULT: '#f0f0e6',
+          DEFAULT: '#F0F0E6',
         },
         stone: {
-          muted: '#8c8c99',
+          muted: '#8C8C99',
         },
       },
       fontFamily: {
-        mono: ['"JetBrains Mono"', 'monospace'],
-        sans: ['Inter', 'sans-serif'],
-        heading: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
-        display: ['"Playfair Display"', 'serif'],
+        // Editorial serif for display statements; grotesque sans for everything;
+        // mono reserved for data + labels.
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
-        xl: "calc(var(--radius) + 4px)",
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-        xs: "calc(var(--radius) - 6px)",
+        sm: '4px',
+        DEFAULT: '8px',
+        md: '8px',
+        lg: '12px',
+        xl: '16px',
       },
-      boxShadow: {
-        xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        cyan: "0 0 20px rgba(0, 229, 255, 0.08)",
-        'cyan-lg': "0 0 60px rgba(0, 229, 255, 0.08)",
-        'btn-hover': "0 4px 20px rgba(0, 229, 255, 0.3)",
-        'glow-border': "0 0 12px rgba(0, 229, 255, 0.35), inset 0 0 12px rgba(0, 229, 255, 0.05)",
+      maxWidth: {
+        prose: '68ch',
       },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
-        },
-        "scroll-dot": {
-          "0%": { transform: "translateY(0)", opacity: "1" },
-          "100%": { transform: "translateY(36px)", opacity: "0" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { opacity: "0.35" },
-          "50%": { opacity: "0.6" },
-        },
-        "float": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
-        "scroll-dot": "scroll-dot 2s ease-in-out infinite",
-        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
-        "float": "float 6s ease-in-out infinite",
+        'fade-up': 'fade-up 0.6s ease-out both',
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }
