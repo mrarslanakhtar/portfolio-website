@@ -70,7 +70,7 @@ export default function CaseStudiesSection() {
         <div className="mt-14 space-y-6">
           {featured.map((c, i) => (
             <ScrollRevealText key={c.program} mode="line" delay={i * 0.05}>
-              <article className="card card-hover p-7 lg:p-9">
+              <article className="card card-lift p-7 lg:p-9">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pb-6 border-b border-[var(--hairline)]">
                   <h3 className="section-title-sm">{c.program}</h3>
                   <span className="data-label text-cream/70">{c.vulnClass}</span>

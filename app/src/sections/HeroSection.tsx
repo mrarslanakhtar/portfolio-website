@@ -1,6 +1,11 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { Suspense, lazy, useState } from 'react'
+import { motion, type Variants } from 'framer-motion'
 import SafeImage from '@/components/SafeImage'
+import MagneticButton from '@/components/MagneticButton'
+
+// The 3D accent is its own lazy chunk — it never blocks first paint and is
+// only fetched when motion is allowed.
+const HeroNetwork = lazy(() => import('@/components/HeroNetwork'))
 
 const proofSignals = [
   { value: 'Top 1%', label: 'HackerOne, global' },
@@ -8,69 +13,66 @@ const proofSignals = [
   { value: '500+', label: 'Production environments' },
 ]
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.12 } },
+}
+const item: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+}
+
 export default function HeroSection() {
-  const rootRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const root = rootRef.current
-    if (!root) return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const items = root.querySelectorAll<HTMLElement>('[data-hero]')
-
-    if (prefersReducedMotion) {
-      gsap.set(items, { opacity: 1, y: 0 })
-      return
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.set(items, { opacity: 0, y: 16 })
-      gsap.to(items, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: 'power3.out',
-        delay: 0.1,
-      })
-    }, root)
-
-    return () => ctx.revert()
-  }, [])
+  // Computed once at mount: skip the WebGL chunk entirely under reduced-motion.
+  const [enable3D] = useState(
+    () => typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
 
   return (
-    <section ref={rootRef} id="hero" className="relative overflow-hidden">
-      <div className="shell-wide pt-32 pb-20 md:pt-40 md:pb-28">
+    <section id="hero" className="relative overflow-hidden">
+      {/* 3D network accent — behind content, decorative, graceful when absent */}
+      {enable3D && (
+        <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+          <Suspense fallback={null}>
+            <HeroNetwork />
+          </Suspense>
+        </div>
+      )}
+
+      <div className="shell-wide relative z-10 pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
           {/* Left — statement */}
-          <div>
-            <div data-hero className="eyebrow mb-7">
+          <motion.div variants={container} initial="hidden" animate="show">
+            <motion.div variants={item} className="eyebrow mb-7">
               <span className="eyebrow-index">MA</span>
               <span className="h-px w-8 bg-[var(--hairline-strong)]" aria-hidden="true" />
               Muhammad Arslan Akhtar
-            </div>
+            </motion.div>
 
-            <h1 data-hero className="display-title">
+            <motion.h1 variants={item} className="display-title">
               I find where identity<br className="hidden sm:block" /> trust chains{' '}
               <span className="italic text-brass">break</span>.
-            </h1>
+            </motion.h1>
 
-            <p data-hero className="lede mt-7 max-w-[36rem]">
+            <motion.p variants={item} className="lede mt-7 max-w-[36rem]">
               Offensive security research in <span className="text-cream">SSO, IAM, and broken access control</span> —
               a manual methodology, tuned to authentication logic that automated scanners read straight past.
-            </p>
+            </motion.p>
 
-            <p data-hero className="body-text mt-4 max-w-[36rem]">
+            <motion.p variants={item} className="body-text mt-4 max-w-[36rem]">
               I don't just report findings. I write the advisory a CISO can act on in one sitting: what an attacker
               can actually reach, what it puts at risk, and the order to fix it.
-            </p>
+            </motion.p>
 
-            <div data-hero className="mt-9 flex flex-wrap gap-3">
-              <a href="#contact" className="btn-primary">Request an advisory</a>
+            <motion.div variants={item} className="mt-9 flex flex-wrap gap-3">
+              <MagneticButton href="#contact" className="btn-primary">Request an advisory</MagneticButton>
               <a href="#proof" className="btn-secondary">See the evidence</a>
-            </div>
+            </motion.div>
 
             {/* Proof signals */}
-            <dl data-hero className="mt-12 grid grid-cols-3 gap-6 max-w-[34rem] border-t border-[var(--hairline)] pt-7">
+            <motion.dl variants={item} className="mt-12 grid grid-cols-3 gap-6 max-w-[34rem] border-t border-[var(--hairline)] pt-7">
               {proofSignals.map((s) => (
                 <div key={s.label}>
                   <dt className="sr-only">{s.label}</dt>
@@ -78,11 +80,16 @@ export default function HeroSection() {
                   <p className="data-label mt-2 leading-snug">{s.label}</p>
                 </div>
               ))}
-            </dl>
-          </div>
+            </motion.dl>
+          </motion.div>
 
           {/* Right — portrait */}
-          <div data-hero className="relative">
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.25 }}
+          >
             <div className="relative rounded-xl overflow-hidden border border-[var(--hairline-strong)] bg-graphite-surface/40">
               <SafeImage
                 src="/images/hero-photo.jpg"
@@ -95,7 +102,6 @@ export default function HeroSection() {
                 loading="eager"
                 fallbackText="MA"
               />
-              {/* Caption strip */}
               <div className="flex items-center justify-between gap-4 px-5 py-4 border-t border-[var(--hairline)] bg-graphite-deep/70 backdrop-blur-sm">
                 <div>
                   <div className="data-label">Focus</div>
@@ -107,9 +113,8 @@ export default function HeroSection() {
                 </div>
               </div>
             </div>
-            {/* Restrained brass corner accent */}
             <span aria-hidden="true" className="absolute -top-2 -left-2 h-8 w-8 border-t border-l border-brass/60 rounded-tl-xl" />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

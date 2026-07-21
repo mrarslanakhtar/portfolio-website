@@ -1,5 +1,6 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
+import SafeImage from '@/components/SafeImage'
 
 type Role = { org: string; role: string; period: string; location: string; highlights: string[] }
 
@@ -46,6 +47,44 @@ export default function BackgroundSection() {
     <section id="background" className="section bg-graphite">
       <div className="shell">
         <SectionHeader index="07" label="Background" title="Experience & education." />
+
+        {/* Credibility strip — professional headshot + in-context shot */}
+        <ScrollRevealText mode="line" className="mt-12">
+          <div className="grid grid-cols-2 gap-4 max-w-xl">
+            <figure>
+              <div className="rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
+                <SafeImage
+                  src="/images/headshot-bw.jpg"
+                  avifSrc="/images/headshot-bw.avif"
+                  webpSrc="/images/headshot-bw.webp"
+                  width={760}
+                  height={760}
+                  alt="Muhammad Arslan Akhtar — portrait"
+                  className="w-full aspect-[4/5] object-cover object-top"
+                  loading="lazy"
+                  fallbackText="MA"
+                />
+              </div>
+              <figcaption className="data-label mt-2">Portrait</figcaption>
+            </figure>
+            <figure>
+              <div className="rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
+                <SafeImage
+                  src="/images/office.jpg"
+                  avifSrc="/images/office.avif"
+                  webpSrc="/images/office.webp"
+                  width={840}
+                  height={1120}
+                  alt="Muhammad Arslan Akhtar working at a desk with security dashboards on screen"
+                  className="w-full aspect-[4/5] object-cover object-top"
+                  loading="lazy"
+                  fallbackText="MA"
+                />
+              </div>
+              <figcaption className="data-label mt-2">In the field</figcaption>
+            </figure>
+          </div>
+        </ScrollRevealText>
 
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Experience */}
