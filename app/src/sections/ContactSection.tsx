@@ -1,4 +1,5 @@
 import SectionHeader from '@/components/SectionHeader'
+import MagneticButton from '@/components/MagneticButton'
 
 const EMAIL = 'mrarslan5156@gmail.com'
 const MAILTO = `mailto:${EMAIL}?subject=Advisory%20enquiry`
@@ -29,7 +30,7 @@ export default function ContactSection() {
               lede="Available for advisory engagements, identity and access-control assessments, and executive briefings. The best first message is a specific one — the system, the boundary, what's keeping you up."
             />
             <div className="mt-9">
-              <a href={MAILTO} className="btn-primary">Start an advisory conversation</a>
+              <MagneticButton href={MAILTO} className="btn-primary">Start an advisory conversation</MagneticButton>
             </div>
           </div>
 

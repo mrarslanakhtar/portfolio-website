@@ -1,9 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useState } from 'react'
+import { motion, type Variants } from 'framer-motion'
 import SectionHeader from '@/components/SectionHeader'
 
-gsap.registerPlugin(ScrollTrigger)
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const gridVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+}
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
+}
 
 const MEDIUM_URL = 'https://medium.com/@mrarslanakhtar'
 const FEED_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@mrarslanakhtar'
@@ -42,7 +49,6 @@ function formatDate(value: string) {
 export default function WritingSection() {
   const [state, setState] = useState<FeedState>('loading')
   const [articles, setArticles] = useState<Article[]>([])
-  const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -78,22 +84,6 @@ export default function WritingSection() {
     return () => controller.abort()
   }, [])
 
-  // Reveal cards once they exist; scoped to a gsap context for clean teardown.
-  useEffect(() => {
-    if (state !== 'ready' || !gridRef.current) return
-    const ctx = gsap.context(() => {
-      gsap.from('.article-card', {
-        opacity: 0,
-        y: 24,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: gridRef.current, start: 'top 82%' },
-      })
-    }, gridRef)
-    return () => ctx.revert()
-  }, [state])
-
   return (
     <section id="writing" className="section bg-graphite-deep">
       <div className="shell">
@@ -119,14 +109,21 @@ export default function WritingSection() {
         )}
 
         {state === 'ready' && (
-          <div ref={gridRef} className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <motion.div
+            className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            variants={gridVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             {articles.map((a) => (
-              <a
+              <motion.a
                 key={a.link}
+                variants={cardVariants}
                 href={a.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="article-card card card-hover p-6 flex flex-col group"
+                className="article-card card card-lift p-6 flex flex-col group"
               >
                 <div className="flex items-center gap-2 data-label">
                   <span>Medium</span>
@@ -139,9 +136,9 @@ export default function WritingSection() {
                 <div className="mt-5 pt-4 border-t border-[var(--hairline)] font-mono text-[11px] tracking-wide text-stone-muted">
                   {a.readingTime} min read
                 </div>
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
         )}
 
         {state === 'fallback' && (
