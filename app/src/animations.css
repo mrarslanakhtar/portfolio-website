@@ -14,5 +14,9 @@
     .pulse-soft {
       animation: none !important;
     }
+    /* No positional hover motion under reduced-motion; keep the shadow/border. */
+    .card-lift:hover {
+      transform: none;
+    }
   }
 }

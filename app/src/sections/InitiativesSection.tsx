@@ -39,7 +39,7 @@ export default function InitiativesSection() {
         <div className="mt-14 grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-6">
           {/* ZenGuard */}
           <ScrollRevealText mode="line">
-            <article className="card p-7 lg:p-9 h-full">
+            <article className="card card-lift p-7 lg:p-9 h-full">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <SafeImage
@@ -85,7 +85,7 @@ export default function InitiativesSection() {
 
           {/* PakCyberShield */}
           <ScrollRevealText mode="line" delay={0.08}>
-            <article className="card p-7 lg:p-9 h-full flex flex-col">
+            <article className="card card-lift p-7 lg:p-9 h-full flex flex-col">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h3 className="section-title-sm">PakCyberShield</h3>

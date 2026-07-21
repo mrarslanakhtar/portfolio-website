@@ -1,9 +1,8 @@
-import { Suspense, lazy, useEffect, useRef } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Lenis from 'lenis'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { MotionConfig } from 'framer-motion'
+import { AnimatePresence, MotionConfig } from 'framer-motion'
 
+import Preloader from '@/components/Preloader'
 import Navigation from '@/components/Navigation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 import LazySection from '@/components/LazySection'
@@ -20,64 +19,51 @@ const InitiativesSection = lazy(() => import('@/sections/InitiativesSection'))
 const WritingSection = lazy(() => import('@/sections/WritingSection'))
 const BackgroundSection = lazy(() => import('@/sections/BackgroundSection'))
 
-gsap.registerPlugin(ScrollTrigger)
+// Play the boot sequence at most once per session, and never under
+// reduced-motion (that path already lands straight on content).
+function shouldBoot() {
+  if (typeof window === 'undefined') return false
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  return sessionStorage.getItem('booted') !== '1'
+}
 
 export default function App() {
-  const lenisRef = useRef<Lenis | null>(null)
+  const [booting, setBooting] = useState(shouldBoot)
+
+  const finishBoot = () => {
+    sessionStorage.setItem('booted', '1')
+    setBooting(false)
+  }
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Lenis smooth scroll is a motion enhancement — skip under reduced-motion.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    // Smooth scroll is a motion enhancement — skip it entirely under
-    // reduced-motion; ScrollTrigger still runs off native scroll.
-    let tickerFn: ((time: number) => void) | null = null
-    if (!prefersReducedMotion) {
-      const lenis = new Lenis({
-        duration: 1.1,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        touchMultiplier: 2,
-      })
-      lenisRef.current = lenis
-      lenis.on('scroll', ScrollTrigger.update)
-      tickerFn = (time: number) => lenis.raf(time * 1000)
-      gsap.ticker.add(tickerFn)
-      gsap.ticker.lagSmoothing(0)
-    }
-
-    // Refresh ScrollTrigger once images have settled so start/end positions
-    // are measured against the final layout.
-    const images = Array.from(document.querySelectorAll('img'))
-    let remaining = images.length
-    const onSettled = () => {
-      remaining -= 1
-      if (remaining <= 0) ScrollTrigger.refresh()
-    }
-    images.forEach((img) => {
-      if (img.complete) {
-        remaining -= 1
-      } else {
-        img.addEventListener('load', onSettled)
-        img.addEventListener('error', onSettled)
-      }
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      touchMultiplier: 2,
     })
-    if (remaining <= 0) ScrollTrigger.refresh()
 
-    const fallback = setTimeout(() => ScrollTrigger.refresh(), 1800)
+    let raf = 0
+    const loop = (time: number) => {
+      lenis.raf(time)
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
 
     return () => {
-      clearTimeout(fallback)
-      images.forEach((img) => {
-        img.removeEventListener('load', onSettled)
-        img.removeEventListener('error', onSettled)
-      })
-      if (tickerFn) gsap.ticker.remove(tickerFn)
-      lenisRef.current?.destroy()
-      lenisRef.current = null
+      cancelAnimationFrame(raf)
+      lenis.destroy()
     }
   }, [])
 
   return (
     <MotionConfig reducedMotion="user">
+      <AnimatePresence>
+        {booting && <Preloader onComplete={finishBoot} />}
+      </AnimatePresence>
+
       <a href="#main-content" className="skip-link">Skip to content</a>
       <ScrollProgressBar />
       <Navigation />
