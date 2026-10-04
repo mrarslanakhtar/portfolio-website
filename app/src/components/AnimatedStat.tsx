@@ -8,11 +8,13 @@ interface AnimatedStatProps {
   prefix?: string
   label: string
   duration?: number
+  /** Poster-scale numeral (the proof band). */
+  giant?: boolean
 }
 
 // Counts up once when scrolled into view, on the framer-motion animate() core
 // already in the bundle. Under reduced-motion the final value renders directly.
-export default function AnimatedStat({ end, suffix = '', prefix = '', label, duration = 1.2 }: AnimatedStatProps) {
+export default function AnimatedStat({ end, suffix = '', prefix = '', label, duration = 1.2, giant = false }: AnimatedStatProps) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.15, margin: '0px 0px -50px 0px' })
   const reduced = useReducedMotion()
@@ -31,8 +33,8 @@ export default function AnimatedStat({ end, suffix = '', prefix = '', label, dur
   return (
     <div ref={ref} className="text-center sm:text-left">
       <div
-        className="font-display font-medium text-cream leading-none"
-        style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
+        className={giant ? 'stat-giant' : 'font-display font-medium text-cream leading-none'}
+        style={giant ? undefined : { fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
       >
         {/* The accessible value is always the real figure; the ticking
             number is presentation only. */}

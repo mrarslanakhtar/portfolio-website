@@ -1,5 +1,6 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 
 type CaseStudy = {
   program: string
@@ -60,8 +61,9 @@ function SeverityTag({ severity }: { severity: 'Critical' | 'High' }) {
 
 export default function CaseStudiesSection() {
   return (
-    <section id="work" className="section section-seam bg-graphite-deep">
-      <div className="shell">
+    <section id="work" className="section section-seam section-ghost bg-graphite-deep">
+      <GhostIndex n="02" />
+      <div className="shell relative">
         <SectionHeader
           index="02"
           label="Case studies"
@@ -70,11 +72,14 @@ export default function CaseStudiesSection() {
         />
 
         <div className="mt-14 space-y-6">
-          {featured.map((c) => (
+          {featured.map((c, i) => (
             <ScrollRevealText key={c.program} mode="line">
               <article className="card card-lift p-7 lg:p-9">
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pb-6 border-b border-[var(--hairline)]">
-                  <h3 className="section-title-sm">{c.program}</h3>
+                <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-6 border-b border-[var(--hairline)]">
+                  <span aria-hidden="true" className="font-display text-brass text-[2rem] md:text-[2.6rem] leading-none">
+                    0{i + 1}
+                  </span>
+                  <h3 className="section-title">{c.program}</h3>
                   <span className="data-label text-cream/70">{c.vulnClass}</span>
                   <span className="ml-auto"><SeverityTag severity={c.severity} /></span>
                 </div>

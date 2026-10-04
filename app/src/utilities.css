@@ -46,6 +46,154 @@
     border-top: 1px solid var(--hairline);
     background-image: linear-gradient(180deg, rgba(5, 8, 14, 0.35), transparent 140px);
   }
+  /* Giant ghost numeral — the 01–08 editorial index as a visual event.
+     Clipped by the section (overflow hidden) so it never widens the page. */
+  .section-ghost {
+    overflow: hidden;
+  }
+  .ghost-index {
+    position: absolute;
+    top: clamp(1rem, 3vw, 2.5rem);
+    right: clamp(-0.5rem, 1vw, 2rem);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(9rem, 22vw, 24rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240, 240, 230, 0.07);
+    pointer-events: none;
+    user-select: none;
+  }
+  .section-cream .ghost-index {
+    -webkit-text-stroke: 1px rgba(15, 20, 32, 0.12);
+  }
+
+  /* Inverted plane — the one cream beat in a graphite page. Every token
+     the children rely on is remapped so existing classes just work. */
+  .section-cream {
+    background: var(--ink);
+    color: var(--graphite);
+    --hairline: rgba(15, 20, 32, 0.12);
+    --hairline-strong: rgba(15, 20, 32, 0.24);
+    --ink-faint: #5a5f6e;
+  }
+  .section-cream .text-cream,
+  .section-cream .section-title,
+  .section-cream .section-title-sm,
+  .section-cream .data-value {
+    color: var(--graphite);
+  }
+  .section-cream .text-stone-muted,
+  .section-cream .lede,
+  .section-cream .body-text,
+  .section-cream .body-sm,
+  .section-cream .data-label,
+  .section-cream .eyebrow {
+    color: #4b5062;
+  }
+  .section-cream .card {
+    background: rgba(15, 20, 32, 0.04);
+    border-color: rgba(15, 20, 32, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .section-cream .eyebrow-index,
+  .section-cream .text-brass {
+    color: #8c7350;
+  }
+  .section-cream .rule-break::after {
+    background: #8c7350;
+  }
+  .section-cream .bg-cyan\/70 {
+    background-color: #00b8d4;
+  }
+
+  /* Ticker strip — a slow CSS marquee of the practice vocabulary. Two
+     copies of the content scroll by 50% for a seamless loop. */
+  .ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker 48s linear infinite;
+    will-change: transform;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+    .ticker {
+      -webkit-mask-image: none;
+      mask-image: none;
+      white-space: normal;
+    }
+  }
+
+  /* Capability cells: a cyan scan-line draws across the top on hover. */
+  .cap-cell {
+    position: relative;
+    transition: background-color var(--dur-med) var(--ease-out);
+  }
+  .cap-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .cap-cell:hover {
+    background-color: rgba(0, 229, 255, 0.035);
+  }
+  .cap-cell:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Poster-scale numerals for the proof band. */
+  .stat-giant {
+    @apply font-display text-cream;
+    font-weight: 500;
+    font-size: clamp(4rem, 9vw, 8.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The closing gesture: a giant, underlined email. */
+  .contact-giant {
+    @apply font-display text-cream;
+    font-weight: 500;
+    font-size: clamp(1.75rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    transition: background-size 0.5s var(--ease-out), color var(--dur-med) var(--ease-out);
+    overflow-wrap: anywhere;
+  }
+  .contact-giant:hover,
+  .contact-giant:focus-visible {
+    background-size: 100% 2px;
+    color: var(--cyan);
+  }
 
   /* ---- Accessibility --------------------------------------------------- */
   .skip-link {
@@ -90,12 +238,13 @@
     line-height: 1.12;
     letter-spacing: -0.01em;
   }
+  /* Poster scale: the hero statement owns the viewport. */
   .display-title {
     @apply font-display text-cream;
     font-weight: 500;
-    font-size: clamp(2.75rem, 7vw, 6.25rem);
-    line-height: 1.01;
-    letter-spacing: -0.02em;
+    font-size: clamp(3rem, 8.6vw, 8.25rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
   }
   .lede {
     @apply font-sans text-stone-muted;

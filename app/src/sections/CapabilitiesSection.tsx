@@ -1,5 +1,6 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 
 type Capability = { title: string; items: string[] }
 
@@ -32,8 +33,9 @@ const capabilities: Capability[] = [
 
 export default function CapabilitiesSection() {
   return (
-    <section id="capabilities" className="section section-seam bg-graphite-deep">
-      <div className="shell">
+    <section id="capabilities" className="section section-seam section-ghost bg-graphite-deep">
+      <GhostIndex n="04" />
+      <div className="shell relative">
         <SectionHeader
           index="04"
           label="Capabilities"
@@ -44,7 +46,7 @@ export default function CapabilitiesSection() {
         <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--hairline)] border border-[var(--hairline)] rounded-lg overflow-hidden">
           {capabilities.map((cap, i) => (
             <ScrollRevealText key={cap.title} mode="line" delay={(i % 3) * 0.05}>
-              <div className="h-full bg-graphite p-7 lg:p-8">
+              <div className="cap-cell h-full bg-graphite p-7 lg:p-8">
                 <div className="flex items-baseline gap-3">
                   <span className="font-mono text-brass text-[12px] tracking-widest">0{i + 1}</span>
                   <h3 className="section-title-sm">{cap.title}</h3>

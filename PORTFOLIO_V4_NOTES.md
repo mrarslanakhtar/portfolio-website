@@ -101,6 +101,23 @@ against the working tree before implementation.
   email, address) and scrubbed of unverifiable profiles; sr-only keyword
   prefix in the H1; `rel="me"` identity links.
 
+### Visual pass (V4.1) — the part you can see
+The first V4 commit extended the V3 system faithfully, and at a glance the
+page read the same. V4.1 transforms the layout and scale while keeping the
+brand (graphite / cyan / brass, Playfair + Inter + JetBrains Mono):
+- **Poster hero**: the statement at up to 8.25rem owns a full viewport; the
+  portrait (the 840px office photo, monochrome) bleeds in from the right and
+  dissolves into the graphite; a slow ticker of the practice vocabulary runs
+  along the hero's bottom edge (pauses on hover, static under reduced-motion).
+- **Giant ghost numerals** (outlined 01–08, up to 24rem) in every section —
+  the editorial index as a visual event, clipped so it never widens the page.
+- **Inverted cream Advisory section** — the one light plane on the page,
+  with every token remapped so the existing components just work on it.
+- **Poster-scale proof band** (6+ / 99th / 90th at up to 8.5rem, ruled).
+- **Giant email** as the Contact closer, with a drawn underline on hover.
+- Case-study cards lead with large brass numerals and section-title names;
+  capability cells draw a cyan scan-line across the top on hover.
+
 ## Verification status
 `npm ci`, `npm run lint`, `npm run build` and Playwright screenshots (desktop
 hero/mid-page) were green through the three.js/fonts/countup stage. A

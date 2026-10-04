@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { m, useInView, type Variants } from 'framer-motion'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 import { EASE } from '@/lib/motion'
 const gridVariants: Variants = {
   hidden: {},
@@ -106,8 +107,9 @@ export default function WritingSection() {
   }, [nearView])
 
   return (
-    <section id="writing" ref={sectionRef} className="section section-seam bg-graphite-deep">
-      <div className="shell">
+    <section id="writing" ref={sectionRef} className="section section-seam section-ghost bg-graphite-deep">
+      <GhostIndex n="06" />
+      <div className="shell relative">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeader
             index="06"

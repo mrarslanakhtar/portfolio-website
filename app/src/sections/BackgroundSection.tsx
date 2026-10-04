@@ -1,6 +1,7 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
 import SafeImage from '@/components/SafeImage'
+import GhostIndex from '@/components/GhostIndex'
 
 type Role = { org: string; role: string; period: string; location: string; highlights: string[] }
 
@@ -44,8 +45,9 @@ const education: Degree[] = [
 
 export default function BackgroundSection() {
   return (
-    <section id="background" className="section section-seam bg-graphite">
-      <div className="shell">
+    <section id="background" className="section section-seam section-ghost bg-graphite">
+      <GhostIndex n="07" />
+      <div className="shell relative">
         <SectionHeader index="07" label="Background" title="Experience & education." />
 
         {/* Credibility strip — professional headshot + in-context shot */}
@@ -70,11 +72,11 @@ export default function BackgroundSection() {
             <figure>
               <div className="rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
                 <SafeImage
-                  src="/images/office.jpg"
-                  avifSrc="/images/office.avif"
-                  webpSrc="/images/office.webp"
-                  width={840}
-                  height={1120}
+                  src="/images/hero-photo.jpg"
+                  avifSrc="/images/hero-photo.avif"
+                  webpSrc="/images/hero-photo.webp"
+                  width={560}
+                  height={700}
                   alt="Muhammad Arslan Akhtar working at a desk with security dashboards on screen"
                   className="w-full aspect-[4/5] object-cover object-top"
                   loading="lazy"

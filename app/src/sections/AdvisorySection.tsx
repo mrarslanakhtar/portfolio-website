@@ -1,5 +1,6 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 
 const specialization = [
   'SSO misconfiguration across Zendesk-backed identity bridges',
@@ -31,8 +32,10 @@ const modules: Module[] = [
 
 export default function AdvisorySection() {
   return (
-    <section id="advisory" className="section section-seam bg-graphite">
-      <div className="shell">
+    // The one inverted plane on the page — the offer, printed on cream.
+    <section id="advisory" className="section section-cream section-ghost">
+      <GhostIndex n="03" />
+      <div className="shell relative">
         <SectionHeader
           index="03"
           label="Advisory & specialization"
@@ -60,7 +63,7 @@ export default function AdvisorySection() {
             <div className="data-label text-cream/80">Where the work concentrates</div>
             <ul className="mt-6 space-y-4">
               {specialization.map((s) => (
-                <li key={s} className="flex items-start gap-3 text-cream/90 text-[0.98rem] leading-relaxed">
+                <li key={s} className="flex items-start gap-3 text-cream text-[0.98rem] leading-relaxed">
                   <span aria-hidden="true" className="mt-2 h-1 w-4 bg-cyan/70 flex-shrink-0" />
                   <span>{s}</span>
                 </li>
@@ -101,7 +104,7 @@ export default function AdvisorySection() {
         <ScrollRevealText mode="line" className="mt-20">
           <div className="rule-break" aria-hidden="true" />
           <blockquote className="py-16 md:py-20 text-center">
-            <span aria-hidden="true" className="block font-display text-brass/60 text-6xl leading-none select-none">“</span>
+            <span aria-hidden="true" className="block font-display text-brass opacity-60 text-6xl leading-none select-none">“</span>
             <p className="mt-2 font-display italic text-cream leading-snug mx-auto max-w-[24ch]" style={{ fontSize: 'clamp(1.9rem, 4.5vw, 3.2rem)' }}>
               Companies don't pay hackers. They pay advisors.
             </p>

@@ -1,6 +1,7 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SafeImage from '@/components/SafeImage'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 
 const zenGuardGoals = [
   { title: 'Trust-chain analysis', desc: 'Model federation boundaries and identity pivots across enterprise SSO topologies.' },
@@ -27,8 +28,9 @@ function StatusTag({ children }: { children: string }) {
 
 export default function InitiativesSection() {
   return (
-    <section id="initiatives" className="section section-seam bg-graphite">
-      <div className="shell">
+    <section id="initiatives" className="section section-seam section-ghost bg-graphite">
+      <GhostIndex n="05" />
+      <div className="shell relative">
         <SectionHeader
           index="05"
           label="Initiatives"

@@ -1,6 +1,7 @@
 import ScrollRevealText from '@/components/ScrollRevealText'
 import AnimatedStat from '@/components/AnimatedStat'
 import SectionHeader from '@/components/SectionHeader'
+import GhostIndex from '@/components/GhostIndex'
 
 type ProofRecord = {
   platform: string
@@ -39,21 +40,17 @@ const records: ProofRecord[] = [
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center sm:text-left">
-      <div
-        className="font-display font-medium text-cream leading-none"
-        style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
-      >
-        {value}
-      </div>
-      <div className="data-label mt-2">{label}</div>
+      <div className="stat-giant">{value}</div>
+      <div className="data-label mt-3">{label}</div>
     </div>
   )
 }
 
 export default function ProofSection() {
   return (
-    <section id="proof" className="section section-seam bg-graphite">
-      <div className="shell">
+    <section id="proof" className="section section-seam section-ghost bg-graphite">
+      <GhostIndex n="01" />
+      <div className="shell relative">
         <SectionHeader
           index="01"
           label="Proof & recognition"
@@ -61,11 +58,17 @@ export default function ProofSection() {
           lede="The figures below come from public platform records. Everything here is verifiable at the source — no self-reported dashboards."
         />
 
-        {/* Stat band */}
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 border-y border-[var(--hairline)] py-10">
-          <Stat value="6+" label="Years in identity & access" />
-          <AnimatedStat end={99} suffix="th" label="Percentile for impact, HackerOne" />
-          <Stat value="P1 · 90th" label="Critical-severity percentile, Bugcrowd" />
+        {/* Stat band — poster scale, ruled between on desktop. */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 border-y border-[var(--hairline)] sm:divide-x sm:divide-[var(--hairline)]">
+          <div className="py-10 sm:pr-8">
+            <Stat value="6+" label="Years in identity & access" />
+          </div>
+          <div className="py-10 border-t sm:border-t-0 border-[var(--hairline)] sm:px-8">
+            <AnimatedStat giant end={99} suffix="th" label="Percentile for impact, HackerOne" />
+          </div>
+          <div className="py-10 border-t sm:border-t-0 border-[var(--hairline)] sm:pl-8">
+            <Stat value="90th" label="P1 severity percentile, Bugcrowd" />
+          </div>
         </div>
 
         {/* Verifiable ledger */}

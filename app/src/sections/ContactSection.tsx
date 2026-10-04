@@ -1,6 +1,8 @@
 import { m, type Variants } from 'framer-motion'
+import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
 import MagneticButton from '@/components/MagneticButton'
+import GhostIndex from '@/components/GhostIndex'
 import { EASE } from '@/lib/motion'
 
 const EMAIL = 'mrarslan5156@gmail.com'
@@ -29,17 +31,30 @@ const rowVariants: Variants = {
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="section section-seam bg-graphite-deep">
-      <div className="shell">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.8fr] gap-12 lg:gap-20 items-start">
+    <section id="contact" className="section section-seam section-ghost bg-graphite-deep">
+      <GhostIndex n="08" />
+      <div className="shell relative">
+        <SectionHeader
+          index="08"
+          label="Contact"
+          title="Worried about an SSO or access-control gap? Let's look at it."
+        />
+
+        {/* The closing gesture: the address itself, at display scale. */}
+        <ScrollRevealText mode="line" className="mt-12">
+          <a href={MAILTO} className="contact-giant inline-block">
+            {EMAIL}
+          </a>
+        </ScrollRevealText>
+
+        <div className="mt-14 grid grid-cols-1 lg:grid-cols-[1fr_0.8fr] gap-12 lg:gap-20 items-start">
           {/* Invitation */}
           <div>
-            <SectionHeader
-              index="08"
-              label="Contact"
-              title="Worried about an SSO or access-control gap? Let's look at it."
-              lede="Available for advisory engagements, identity and access-control assessments, and executive briefings. The best first message is a specific one: the system, the boundary you're unsure about, and what it protects."
-            />
+            <ScrollRevealText mode="line" className="lede max-w-[36rem]">
+              Available for advisory engagements, identity and access-control assessments, and executive briefings.
+              The best first message is a specific one: the system, the boundary you're unsure about, and what it
+              protects.
+            </ScrollRevealText>
             <div className="mt-9">
               <MagneticButton href={MAILTO} className="btn-primary">Start an advisory conversation</MagneticButton>
             </div>
