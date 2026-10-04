@@ -32,13 +32,13 @@ const capabilities: Capability[] = [
 
 export default function CapabilitiesSection() {
   return (
-    <section id="capabilities" className="section bg-graphite-deep">
+    <section id="capabilities" className="section section-seam bg-graphite-deep">
       <div className="shell">
         <SectionHeader
           index="04"
           label="Capabilities"
           title="The surface I actually work across."
-          lede="Not a set of progress bars — the concrete territory of identity, access control, and the trust plumbing underneath enterprise SSO."
+          lede="The concrete territory of identity, access control, and the trust plumbing underneath enterprise SSO."
         />
 
         <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--hairline)] border border-[var(--hairline)] rounded-lg overflow-hidden">

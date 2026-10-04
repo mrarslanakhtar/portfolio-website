@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
-import { motion, type Variants } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { m, useInView, type Variants } from 'framer-motion'
 import SectionHeader from '@/components/SectionHeader'
-
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+import { EASE } from '@/lib/motion'
 const gridVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
@@ -40,6 +39,14 @@ interface Rss2JsonResponse {
 
 type FeedState = 'loading' | 'ready' | 'fallback'
 
+// Medium titles/excerpts arrive with HTML entities (&amp;, &#8217;…) that
+// would otherwise render literally.
+function decodeEntities(value: string) {
+  if (!/[&<]/.test(value)) return value
+  const doc = new DOMParser().parseFromString(value, 'text/html')
+  return doc.documentElement.textContent ?? value
+}
+
 function formatDate(value: string) {
   const d = new Date(value)
   if (Number.isNaN(d.getTime())) return ''
@@ -49,18 +56,32 @@ function formatDate(value: string) {
 export default function WritingSection() {
   const [state, setState] = useState<FeedState>('loading')
   const [articles, setArticles] = useState<Article[]>([])
+  const sectionRef = useRef<HTMLElement>(null)
+  // Fetch only as the section approaches the viewport — not on page load.
+  const nearView = useInView(sectionRef, { once: true, margin: '600px 0px' })
 
   useEffect(() => {
+    if (!nearView) return
     const controller = new AbortController()
 
-    fetch(FEED_URL, { signal: controller.signal })
+    // A stalled third-party feed resolves to the fallback card instead of a
+    // skeleton that pulses forever. (Feature-guarded: AbortSignal.any/timeout
+    // are 2023+ APIs; older browsers just lose the timeout.)
+    const signal =
+      typeof AbortSignal.any === 'function' && typeof AbortSignal.timeout === 'function'
+        ? AbortSignal.any([controller.signal, AbortSignal.timeout(8000)])
+        : controller.signal
+
+    fetch(FEED_URL, { signal })
       .then((res) => (res.ok ? (res.json() as Promise<Rss2JsonResponse>) : Promise.reject(new Error('bad status'))))
       .then((data) => {
         const items = data.status === 'ok' ? data.items ?? [] : []
         const parsed: Article[] = items.slice(0, 6).map((item) => {
-          const raw = (item.content || item.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+          const raw = decodeEntities(
+            (item.content || item.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+          )
           return {
-            title: item.title ?? 'Untitled',
+            title: decodeEntities(item.title ?? 'Untitled'),
             link: item.link ?? MEDIUM_URL,
             pubDate: item.pubDate ?? '',
             categories: item.categories ?? [],
@@ -82,10 +103,10 @@ export default function WritingSection() {
       })
 
     return () => controller.abort()
-  }, [])
+  }, [nearView])
 
   return (
-    <section id="writing" className="section bg-graphite-deep">
+    <section id="writing" ref={sectionRef} className="section section-seam bg-graphite-deep">
       <div className="shell">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeader
@@ -109,7 +130,7 @@ export default function WritingSection() {
         )}
 
         {state === 'ready' && (
-          <motion.div
+          <m.div
             className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
             variants={gridVariants}
             initial="hidden"
@@ -117,28 +138,28 @@ export default function WritingSection() {
             viewport={{ once: true, amount: 0.15 }}
           >
             {articles.map((a) => (
-              <motion.a
+              <m.a
                 key={a.link}
                 variants={cardVariants}
                 href={a.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="article-card card card-lift p-6 flex flex-col group"
+                className="card card-lift p-6 flex flex-col group"
               >
                 <div className="flex items-center gap-2 data-label">
                   <span>Medium</span>
-                  {a.pubDate && <span className="text-stone-muted/60">· {formatDate(a.pubDate)}</span>}
+                  {a.pubDate && <span>· {formatDate(a.pubDate)}</span>}
                 </div>
                 <h3 className="mt-4 font-display text-xl text-cream leading-snug group-hover:text-cyan transition-colors line-clamp-3">
                   {a.title}
                 </h3>
-                {a.excerpt && <p className="body-text mt-3 !text-[0.92rem] line-clamp-3 flex-1">{a.excerpt}</p>}
+                {a.excerpt && <p className="body-sm mt-3 line-clamp-3 flex-1">{a.excerpt}</p>}
                 <div className="mt-5 pt-4 border-t border-[var(--hairline)] font-mono text-[11px] tracking-wide text-stone-muted">
                   {a.readingTime} min read
                 </div>
-              </motion.a>
+              </m.a>
             ))}
-          </motion.div>
+          </m.div>
         )}
 
         {state === 'fallback' && (

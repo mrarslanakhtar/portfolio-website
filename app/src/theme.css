@@ -2,29 +2,54 @@
   :root {
     --graphite: #0F1420;
     --graphite-deep: #0B0F18;
-    --surface: #161C2B;
-    --surface-raised: #1E2740;
     --ink: #F0F0E6;
-    --ink-muted: #8C8C99;
     --cyan: #00E5FF;
-    --cyan-deep: #00B8D4;
     --brass: #B99A6B;
     --hairline: rgba(240, 240, 230, 0.10);
     --hairline-strong: rgba(240, 240, 230, 0.18);
+    /* Quietest legible step for de-emphasized meta text (≥4.5:1 on deep). */
+    --ink-faint: #9D9DAA;
+    /* House motion voice — the CSS twin of EASE in src/lib/motion.ts. */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-med: 0.3s;
   }
 
+  /* No CSS smooth-scroll: Lenis owns wheel scrolling, and in-page jumps go
+     through src/lib/scroll.ts, which picks the right behavior (and honors
+     reduced-motion) explicitly. scroll-padding keeps native hash jumps (deep
+     links, back/forward) clear of the fixed header — Lenis reads it too. */
   html {
-    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
   }
 
   body {
     @apply bg-graphite text-cream font-sans antialiased;
     overflow-x: hidden;
-    /* One quiet, static wash of depth — no perpetual glow, no matrix grid. */
+  }
+
+  /* One quiet, static wash of depth plus a faint film grain — rendered on a
+     fixed overlay (App.tsx) rather than background-attachment: fixed, which
+     iOS Safari ignores. The grain is an inline SVG feTurbulence tile. */
+  .atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
     background-image:
-      radial-gradient(1100px 780px at 78% -8%, rgba(0, 229, 255, 0.045), transparent 60%),
-      radial-gradient(900px 700px at 0% 100%, rgba(185, 154, 107, 0.035), transparent 60%);
-    background-attachment: fixed;
+      radial-gradient(clamp(900px, 60vw, 1700px) clamp(650px, 42vw, 1200px) at 78% -8%, rgba(0, 229, 255, 0.045), transparent 60%),
+      radial-gradient(clamp(750px, 50vw, 1400px) clamp(580px, 38vw, 1100px) at 0% 100%, rgba(185, 154, 107, 0.035), transparent 60%);
+  }
+  /* Film grain rides ABOVE the content (sections paint opaque backgrounds,
+     so a behind-content grain would only ever show through the hero). */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
   }
 
   ::selection {
@@ -44,9 +69,6 @@
    smooth-scroll, and long transitions. JS motion is gated separately
    (MotionConfig reducedMotion="user" + prefers-reduced-motion checks). */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {

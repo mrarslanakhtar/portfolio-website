@@ -13,7 +13,7 @@ type Module = { title: string; desc: string }
 const modules: Module[] = [
   {
     title: 'Executive-grade advisory',
-    desc: 'Reports built for CEO/CISO action in a single sitting — exploitability, blast radius, and the order in which to fix.',
+    desc: 'Exploitability, blast radius, and the order in which to fix — written in the language the board acts on.',
   },
   {
     title: 'Identity & access threat modeling',
@@ -31,12 +31,12 @@ const modules: Module[] = [
 
 export default function AdvisorySection() {
   return (
-    <section id="advisory" className="section bg-graphite-deep">
+    <section id="advisory" className="section section-seam bg-graphite">
       <div className="shell">
         <SectionHeader
-          index="02"
+          index="03"
           label="Advisory & specialization"
-          title="A specialization most testers never reach."
+          title="Narrow by design. Six years deep."
           lede="Automated tools check boxes against static signatures. The findings that matter live in authentication logic and trust relationships — and those are read by hand."
         />
 
@@ -50,16 +50,8 @@ export default function AdvisorySection() {
             </ScrollRevealText>
             <ScrollRevealText mode="line" className="body-text mt-5" delay={0.05}>
               A BS in applied mathematics supplies the exploit reasoning — cryptography, computation, probability. An MBA,
-              with distinction, supplies the boardroom language. The combination is deliberate: I don't just find the
-              vulnerability, I translate it into a decision leadership can make. Advisory engagements run up to $25,000.
-            </ScrollRevealText>
-
-            <ScrollRevealText mode="line" className="mt-10" delay={0.1}>
-              <blockquote className="border-l-2 border-brass pl-6">
-                <p className="font-display italic text-cream text-2xl md:text-[1.9rem] leading-snug">
-                  “Companies don't pay hackers. They pay advisors.”
-                </p>
-              </blockquote>
+              with distinction, supplies the boardroom language. The combination is deliberate: finding the vulnerability
+              is half the work — the other half is translating it into a decision leadership can make.
             </ScrollRevealText>
           </div>
 
@@ -80,6 +72,17 @@ export default function AdvisorySection() {
         {/* Advisory work — editorial numbered list */}
         <div className="mt-16">
           <div className="data-label text-cream/70 mb-2">How the engagement is delivered</div>
+          <ScrollRevealText mode="line">
+            <div className="grid grid-cols-1 md:grid-cols-[64px_1fr] gap-3 md:gap-8 items-baseline py-7 border-t border-[var(--hairline-strong)]">
+              <div className="data-label text-brass">Range</div>
+              <div className="md:grid md:grid-cols-[minmax(0,320px)_1fr] md:gap-10 items-baseline">
+                <div className="data-value text-xl md:text-2xl">$15,000 – $25,000</div>
+                <p className="body-sm mt-2 md:mt-0">
+                  Scoped to the identity surface under review, not to hours.
+                </p>
+              </div>
+            </div>
+          </ScrollRevealText>
           {modules.map((m, i) => (
             <ScrollRevealText key={m.title} mode="line" delay={i * 0.05}>
               <div className="grid grid-cols-1 md:grid-cols-[64px_1fr] gap-3 md:gap-8 items-baseline py-7 border-t border-[var(--hairline)]">
@@ -93,6 +96,18 @@ export default function AdvisorySection() {
           ))}
           <div className="border-t border-[var(--hairline)]" />
         </div>
+
+        {/* The site's one quotable line, given the room it earns. */}
+        <ScrollRevealText mode="line" className="mt-20">
+          <div className="rule-break" aria-hidden="true" />
+          <blockquote className="py-16 md:py-20 text-center">
+            <span aria-hidden="true" className="block font-display text-brass/60 text-6xl leading-none select-none">“</span>
+            <p className="mt-2 font-display italic text-cream leading-snug mx-auto max-w-[24ch]" style={{ fontSize: 'clamp(1.9rem, 4.5vw, 3.2rem)' }}>
+              Companies don't pay hackers. They pay advisors.
+            </p>
+          </blockquote>
+          <div className="rule-break" aria-hidden="true" />
+        </ScrollRevealText>
       </div>
     </section>
   )

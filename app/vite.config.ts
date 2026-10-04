@@ -17,9 +17,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'framer-motion': ['framer-motion'],
-          vendor: ['react', 'react-dom'],
+        // Function form so whole node_modules subtrees land deterministically:
+        // react-dom stays out of the app chunk and framer's runtime doesn't
+        // leak React internals (the array form misassigned both).
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return
+          if (id.includes('framer-motion') || id.includes('motion-dom') || id.includes('motion-utils')) return 'motion'
+          if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) return 'react'
+          return 'vendor'
         },
       },
     },

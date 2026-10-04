@@ -44,7 +44,7 @@ const education: Degree[] = [
 
 export default function BackgroundSection() {
   return (
-    <section id="background" className="section bg-graphite">
+    <section id="background" className="section section-seam bg-graphite">
       <div className="shell">
         <SectionHeader index="07" label="Background" title="Experience & education." />
 

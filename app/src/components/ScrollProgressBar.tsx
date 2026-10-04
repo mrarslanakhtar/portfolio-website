@@ -1,38 +1,19 @@
-import { useEffect, useRef } from 'react'
+import { m, useScroll, useSpring, useReducedMotion } from 'framer-motion'
 
+// Reading-progress hairline. useScroll is event-driven (no rAF polling), and
+// position is state rather than motion — under reduced-motion the bar still
+// tracks, just without the spring smoothing.
 export default function ScrollProgressBar() {
-  const barRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const bar = barRef.current
-    if (!bar) return
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    const update = () => {
-      const doc = document.documentElement
-      const max = Math.max(1, doc.scrollHeight - doc.clientHeight)
-      const p = Math.min(1, Math.max(0, window.scrollY / max))
-      bar.style.transform = `scaleX(${p})`
-      if (!prefersReducedMotion) raf = requestAnimationFrame(update)
-    }
-
-    let raf = requestAnimationFrame(update)
-    window.addEventListener('resize', update)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', update)
-    }
-  }, [])
+  const { scrollYProgress } = useScroll()
+  const reduced = useReducedMotion()
+  const smoothed = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 })
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-px bg-transparent" aria-hidden="true">
-      <div
-        ref={barRef}
+      <m.div
         className="h-full w-full origin-left bg-cyan/70"
-        style={{ transform: 'scaleX(0)' }}
+        style={{ scaleX: reduced ? scrollYProgress : smoothed }}
       />
     </div>
   )
 }
-

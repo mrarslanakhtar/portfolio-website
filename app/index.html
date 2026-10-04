@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Muhammad Arslan Akhtar | SSO & Access-Control Security Researcher</title>
-    <meta name="description" content="Muhammad Arslan Akhtar — offensive security researcher specializing in SSO, IAM, and broken access control. Top 1% on HackerOne. Leads the ZenGuard identity-security initiative." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Muhammad Arslan Akhtar — SSO & IAM Security Researcher</title>
+    <meta name="description" content="Offensive security researcher — SSO, IAM & broken access control. Top 1% on HackerOne, 91.3% Bugcrowd accuracy. Advisory reports CISOs can act on." />
     <meta name="author" content="Muhammad Arslan Akhtar" />
     <link rel="canonical" href="https://mrarslanakhtar.vercel.app/" />
     <meta name="theme-color" content="#0F1420" />
@@ -15,31 +15,29 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Muhammad Arslan Akhtar" />
     <meta property="og:url" content="https://mrarslanakhtar.vercel.app/" />
     <meta property="og:title" content="Muhammad Arslan Akhtar | SSO & Access-Control Security Researcher" />
     <meta property="og:description" content="Offensive security researcher specializing in SSO, IAM, and broken access control. Top 1% on HackerOne. Leads the ZenGuard identity-security initiative." />
-    <meta property="og:image" content="https://mrarslanakhtar.vercel.app/images/og-elite-offsec.jpg" />
+    <meta property="og:image" content="https://mrarslanakhtar.vercel.app/images/og-identity-trust.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Muhammad Arslan Akhtar — SSO & Access-Control Security Researcher" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Muhammad Arslan Akhtar | SSO & Access-Control Security Researcher" />
     <meta name="twitter:description" content="Top 1% on HackerOne. Offensive research in identity, SSO, and broken access control." />
-    <meta name="twitter:image" content="https://mrarslanakhtar.vercel.app/images/og-elite-offsec.jpg" />
-    <meta name="twitter:creator" content="@mrarslanakhtar" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Load fonts non-render-blocking; display=swap keeps text visible while they fetch. -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
-    </noscript>
+    <meta name="twitter:image" content="https://mrarslanakhtar.vercel.app/images/og-identity-trust.jpg" />
+    <meta name="twitter:image:alt" content="Muhammad Arslan Akhtar — SSO & Access-Control Security Researcher" />
+    <!-- Fonts are self-hosted variable woff2 (see src/fonts.css) — no third-party
+         font CDN, no render-blocking stylesheet. Preload the faces in the hero
+         headline and body; the mono face (11-12px labels) swaps in unnoticed. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/playfair-latin-var.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/playfair-italic-latin-var.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-var.woff2" crossorigin />
+    <!-- Hero portrait is the desktop LCP element — fetch it with the document.
+         On phones it stacks below the fold, so the preload is width-gated. -->
+    <link rel="preload" as="image" href="/images/hero-photo.avif" type="image/avif" fetchpriority="high" media="(min-width: 1024px)" />
 
     <script type="application/ld+json">
     {
@@ -52,7 +50,13 @@
           "alternateName": "Arslan Akhtar",
           "url": "https://mrarslanakhtar.vercel.app/",
           "image": "https://mrarslanakhtar.vercel.app/images/hero-photo.jpg",
-          "jobTitle": "Offensive Security Researcher (SSO / IAM & Broken Access Control)",
+          "jobTitle": "SSO & Access-Control Security Researcher",
+          "email": "mailto:mrarslan5156@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Islamabad",
+            "addressCountry": "PK"
+          },
           "description": "Offensive security researcher specializing in SSO, IAM, and broken access control. Top 1% on HackerOne. Leads the ZenGuard identity-security initiative.",
           "knowsAbout": [
             "Single Sign-On (SSO) Security",
@@ -67,10 +71,22 @@
           "sameAs": [
             "https://www.linkedin.com/in/mrarslanakhtar/",
             "https://hackerone.com/mrarslanakhtar",
-            "https://bugcrowd.com/mrarslanakhtar",
-            "https://medium.com/@mrarslanakhtar",
-            "https://github.com/mrarslanakhtar",
-            "https://twitter.com/mrarslanakhtar"
+            "https://bugcrowd.com/h/mrarslanakhtar",
+            "https://medium.com/@mrarslanakhtar"
+          ],
+          "award": "Top 1% researcher on HackerOne",
+          "affiliation": [
+            {
+              "@type": "Organization",
+              "name": "ZenGuard",
+              "description": "SSO misconfiguration detection initiative",
+              "sameAs": "https://www.linkedin.com/company/zenguard-identity/"
+            },
+            {
+              "@type": "Organization",
+              "name": "PakCyberShield",
+              "description": "Early-stage managed bug-bounty initiative for South Asia"
+            }
           ]
         },
         {
@@ -78,6 +94,8 @@
           "@id": "https://mrarslanakhtar.vercel.app/#website",
           "url": "https://mrarslanakhtar.vercel.app/",
           "name": "Muhammad Arslan Akhtar",
+          "inLanguage": "en",
+          "description": "Portfolio and advisory practice of Muhammad Arslan Akhtar — offensive security research in SSO, IAM, and broken access control.",
           "publisher": { "@id": "https://mrarslanakhtar.vercel.app/#person" }
         },
         {

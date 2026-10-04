@@ -26,17 +26,33 @@ const records: ProofRecord[] = [
     verify: 'View Bugcrowd profile',
   },
   {
-    platform: 'Writing',
-    claim: 'Ongoing SSO / IAM research essays',
-    detail: 'Published breakdowns of authentication and trust-chain failure modes.',
-    href: 'https://medium.com/@mrarslanakhtar',
-    verify: 'Read on Medium',
+    platform: 'Recognition',
+    claim: 'Recruited directly by Hootsuite’s VP of IT & Security',
+    detail: 'Brought in for identity and SSO trust-chain research on the strength of prior advisory reporting.',
+    href: 'https://www.linkedin.com/in/mrarslanakhtar/',
+    verify: 'View LinkedIn profile',
   },
 ]
 
+// The hero already shows Top 1% / 500+ Zendesk deployments / 91.3% — this
+// band carries the figures not yet seen.
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="text-center sm:text-left">
+      <div
+        className="font-display font-medium text-cream leading-none"
+        style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}
+      >
+        {value}
+      </div>
+      <div className="data-label mt-2">{label}</div>
+    </div>
+  )
+}
+
 export default function ProofSection() {
   return (
-    <section id="proof" className="section bg-graphite">
+    <section id="proof" className="section section-seam bg-graphite">
       <div className="shell">
         <SectionHeader
           index="01"
@@ -47,19 +63,9 @@ export default function ProofSection() {
 
         {/* Stat band */}
         <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 border-y border-[var(--hairline)] py-10">
-          <div className="text-center sm:text-left">
-            <div className="font-display font-medium text-cream leading-none" style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)' }}>
-              Top&nbsp;1%
-            </div>
-            <div className="data-label mt-2">HackerOne, global rank</div>
-          </div>
-          <div className="text-center sm:text-left">
-            <div className="font-display font-medium text-cream leading-none" style={{ fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)', fontVariantNumeric: 'tabular-nums' }}>
-              91.3%
-            </div>
-            <div className="data-label mt-2">Bugcrowd accuracy</div>
-          </div>
-          <AnimatedStat end={500} suffix="+" label="Production environments engaged" />
+          <Stat value="6+" label="Years in identity & access" />
+          <AnimatedStat end={99} suffix="th" label="Percentile for impact, HackerOne" />
+          <Stat value="P1 · 90th" label="Critical-severity percentile, Bugcrowd" />
         </div>
 
         {/* Verifiable ledger */}
@@ -70,20 +76,20 @@ export default function ProofSection() {
                 <div className="data-label text-cream/80">{r.platform}</div>
                 <div>
                   <p className="text-cream text-[1.05rem]">{r.claim}</p>
-                  <p className="body-text mt-1 !text-[0.95rem]">{r.detail}</p>
+                  <p className="body-sm mt-1">{r.detail}</p>
                 </div>
                 {r.href && (
-                  <a href={r.href} target="_blank" rel="noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide whitespace-nowrap">
+                  <a href={r.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide whitespace-nowrap">
                     {r.verify} <span aria-hidden="true">↗</span>
                   </a>
                 )}
               </div>
             </ScrollRevealText>
           ))}
-          <div className="border-t border-[var(--hairline)]" />
+          <div className="rule-break" aria-hidden="true" />
         </div>
 
-        <p className="mt-8 body-text !text-[0.9rem] max-w-prose text-stone-muted/80">
+        <p className="mt-8 body-sm max-w-prose">
           Program names elsewhere on this page refer to bug-bounty findings and disclosures — not commercial endorsements or ongoing client relationships.
         </p>
       </div>

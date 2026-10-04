@@ -1,98 +1,212 @@
 import { useEffect, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+
+// Decorative low-poly network accent, scoped to the hero. A hand-rolled 3D
+// point cloud projected onto a 2D canvas — same visual as the previous
+// three.js scene (slow ambient rotation, perspective depth, scroll-tied
+// parallax) at a fraction of its ~860KB chunk. Rendering pauses entirely
+// while the hero is out of view.
 
 const NODE_COUNT = 44
 const LINK_DIST = 2.6
+const CAM_Z = 9
+const FOV = 52 // degrees, vertical — matches the old three.js camera
 
-// The node graph is a fixed decorative constant, generated once at module load
-// (keeps render pure — no Math.random during render).
-function buildGraph() {
-  const nodes: THREE.Vector3[] = []
-  for (let i = 0; i < NODE_COUNT; i++) {
-    nodes.push(new THREE.Vector3((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8, (Math.random() - 0.5) * 4))
+type Node = { x: number; y: number; z: number }
+
+// Seeded PRNG so the composition is art-directed and identical for every
+// visitor instead of left to chance.
+function mulberry32(seed: number) {
+  let a = seed
+  return () => {
+    a |= 0
+    a = (a + 0x6d2b79f5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
-  const positions = new Float32Array(NODE_COUNT * 3)
-  nodes.forEach((n, i) => positions.set([n.x, n.y, n.z], i * 3))
+}
 
-  const links: number[] = []
+// Fixed decorative constant, generated once at module load (render stays pure).
+function buildGraph() {
+  const rand = mulberry32(20261004)
+  const nodes: Node[] = []
+  for (let i = 0; i < NODE_COUNT; i++) {
+    nodes.push({
+      x: (rand() - 0.5) * 8,
+      y: (rand() - 0.5) * 8,
+      z: (rand() - 0.5) * 4,
+    })
+  }
+  const links: [number, number][] = []
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      if (nodes[i].distanceTo(nodes[j]) < LINK_DIST) {
-        links.push(nodes[i].x, nodes[i].y, nodes[i].z, nodes[j].x, nodes[j].y, nodes[j].z)
-      }
+      const dx = nodes[i].x - nodes[j].x
+      const dy = nodes[i].y - nodes[j].y
+      const dz = nodes[i].z - nodes[j].z
+      if (Math.sqrt(dx * dx + dy * dy + dz * dz) < LINK_DIST) links.push([i, j])
     }
   }
-  return { positions, linePositions: new Float32Array(links) }
+  return { nodes, links }
 }
 
 const GRAPH = buildGraph()
+// Links that carry a traveling pulse (indices into the links array).
+const PULSE_LINKS = [2, 9, 17, 25, 33]
 
-function hasWebGL() {
-  try {
-    const canvas = document.createElement('canvas')
-    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
-  } catch {
-    return false
-  }
-}
-
-function Scene() {
-  const group = useRef<THREE.Group>(null)
-  const scroll = useRef(0)
-  const { positions, linePositions } = GRAPH
+export default function HeroNetwork() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const onScroll = () => {
-      scroll.current = window.scrollY
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let raf = 0
+    let running = false
+    let last = performance.now()
+    let rotY = 0
+    let rotX = 0
+    let pulseT = 0
+    let scrollY = window.scrollY
+    let width = 0
+    let height = 0
+    let dpr = 1
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75)
+      const rect = canvas.getBoundingClientRect()
+      width = rect.width
+      height = rect.height
+      canvas.width = Math.round(width * dpr)
+      canvas.height = Math.round(height * dpr)
     }
-    onScroll()
+
+    const onScroll = () => {
+      scrollY = window.scrollY
+    }
+
+    // Projected node buffer, reused across frames.
+    const px = new Float32Array(NODE_COUNT)
+    const py = new Float32Array(NODE_COUNT)
+    const pz = new Float32Array(NODE_COUNT)
+
+    const draw = (now: number) => {
+      const delta = Math.min((now - last) / 1000, 0.1)
+      last = now
+
+      // Slow ambient rotation + subtle scroll-tied parallax (not mouse-reactive).
+      rotY += delta * 0.045
+      const targetX = scrollY * 0.0005
+      rotX += (targetX - rotX) * 0.04
+      const liftY = Math.min(scrollY * 0.001, 3)
+
+      const focal = height / 2 / Math.tan(((FOV / 2) * Math.PI) / 180)
+      const cosY = Math.cos(rotY)
+      const sinY = Math.sin(rotY)
+      const cosX = Math.cos(rotX)
+      const sinX = Math.sin(rotX)
+      const cx = width / 2
+      const cy = height / 2
+
+      const { nodes, links } = GRAPH
+      for (let i = 0; i < NODE_COUNT; i++) {
+        const n = nodes[i]
+        // Rotate around Y, then X, then lift with scroll.
+        const x1 = n.x * cosY + n.z * sinY
+        const z1 = -n.x * sinY + n.z * cosY
+        const y2 = n.y * cosX - z1 * sinX + liftY
+        const z2 = n.y * sinX + z1 * cosX
+        const depth = CAM_Z - z2
+        const s = focal / depth
+        px[i] = cx + x1 * s
+        py[i] = cy - y2 * s
+        pz[i] = depth
+      }
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ctx.clearRect(0, 0, width, height)
+
+      // Links first, points over them — same layering as the old scene.
+      ctx.lineWidth = 1
+      ctx.strokeStyle = 'rgba(28, 147, 172, 0.16)'
+      ctx.beginPath()
+      for (const [a, b] of links) {
+        ctx.moveTo(px[a], py[a])
+        ctx.lineTo(px[b], py[b])
+      }
+      ctx.stroke()
+
+      // Signal pulses: bright points traveling along a few links — traffic
+      // crossing the trust chain. Staggered phases, slow cadence.
+      pulseT += delta * 0.22
+      for (let p = 0; links.length > 0 && p < PULSE_LINKS.length; p++) {
+        const [a, b] = links[PULSE_LINKS[p] % links.length]
+        const t = (pulseT + p * 0.37) % 1
+        const e = t * t * (3 - 2 * t) // smoothstep, eases both ends
+        const sx = px[a] + (px[b] - px[a]) * e
+        const sy = py[a] + (py[b] - py[a]) * e
+        // Fade in/out at the ends of the run.
+        const fade = Math.min(1, Math.min(t, 1 - t) * 6)
+        ctx.fillStyle = `rgba(0, 229, 255, ${(0.55 * fade).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(sx, sy, 1.6, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      for (let i = 0; i < NODE_COUNT; i++) {
+        // Size and alpha attenuate with depth, like sizeAttenuation did.
+        const r = Math.max((0.035 * focal) / pz[i], 0.8)
+        const alpha = Math.min(0.7, (0.7 * 10) / (pz[i] * 1.6))
+        ctx.fillStyle = `rgba(0, 229, 255, ${alpha.toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(px[i], py[i], r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      raf = requestAnimationFrame(draw)
+    }
+
+    const start = () => {
+      if (running) return
+      running = true
+      last = performance.now()
+      raf = requestAnimationFrame(draw)
+    }
+    const stop = () => {
+      running = false
+      cancelAnimationFrame(raf)
+    }
+
+    resize()
+
+    // Only render while the hero is actually on screen.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) start()
+        else stop()
+      },
+      { rootMargin: '80px 0px' },
+    )
+    io.observe(canvas)
+
+    const ro = new ResizeObserver(resize)
+    ro.observe(canvas)
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+
+    return () => {
+      stop()
+      io.disconnect()
+      ro.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
-  useFrame((_, delta) => {
-    const g = group.current
-    if (!g) return
-    // Slow ambient rotation.
-    g.rotation.y += delta * 0.045
-    // Subtle scroll-tied parallax (not mouse-reactive — kept calm).
-    const targetX = scroll.current * 0.0005
-    g.rotation.x += (targetX - g.rotation.x) * 0.04
-    g.position.y = Math.min(scroll.current * 0.001, 3)
-  })
-
   return (
-    <group ref={group}>
-      <points>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-        </bufferGeometry>
-        <pointsMaterial color="#00E5FF" size={0.07} sizeAttenuation transparent opacity={0.7} depthWrite={false} />
-      </points>
-      <lineSegments>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
-        </bufferGeometry>
-        <lineBasicMaterial color="#1C93AC" transparent opacity={0.16} depthWrite={false} />
-      </lineSegments>
-    </group>
-  )
-}
-
-// Decorative low-poly network accent, scoped to the hero. Returns null when
-// WebGL is unavailable so the hero degrades to the plain V2 composition.
-export default function HeroNetwork() {
-  if (typeof window === 'undefined' || !hasWebGL()) return null
-
-  return (
-    <Canvas
-      camera={{ position: [0, 0, 9], fov: 52 }}
-      dpr={[1, 1.75]}
-      gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
-      style={{ pointerEvents: 'none' }}
-    >
-      <Scene />
-    </Canvas>
+    <canvas
+      ref={canvasRef}
+      className="h-full w-full motion-safe:animate-[fade-up_1.2s_ease-out_both]"
+      aria-hidden="true"
+    />
   )
 }

@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, m } from 'framer-motion'
+import { getLenis, scrollToHash } from '@/lib/scroll'
+import { EASE } from '@/lib/motion'
 
 const navLinks = [
   { label: 'Proof', href: '#proof' },
-  { label: 'Advisory', href: '#advisory' },
   { label: 'Work', href: '#work' },
+  { label: 'Advisory', href: '#advisory' },
   { label: 'Capabilities', href: '#capabilities' },
   { label: 'Initiatives', href: '#initiatives' },
   { label: 'Writing', href: '#writing' },
@@ -11,6 +14,16 @@ const navLinks = [
 ]
 
 const CV_HREF = '/cv/Arslan_CV_2026.pdf'
+
+const menuVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.3, ease: EASE, staggerChildren: 0.05, delayChildren: 0.1 } },
+  exit: { opacity: 0, transition: { duration: 0.25, ease: EASE } },
+}
+const menuItemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE } },
+}
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
@@ -26,9 +39,11 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Scrollspy: mark the section currently occupying the upper viewport as active.
+  // Scrollspy: mark the section currently occupying the upper viewport as
+  // active. The hero is observed too so scrolling back to the top clears
+  // the highlight instead of leaving the last section stuck active.
   useEffect(() => {
-    const ids = navLinks.map((l) => l.href.slice(1))
+    const ids = ['hero', ...navLinks.map((l) => l.href.slice(1))]
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null)
@@ -47,15 +62,23 @@ export default function Navigation() {
     return () => observer.disconnect()
   }, [])
 
-  // Mobile menu: trap focus while open, close on Escape, return focus on close.
+  // Mobile menu: lock page scroll, trap focus (toggle included), close on
+  // Escape, return focus on close.
   useEffect(() => {
     if (!menuOpen) return
     const menu = menuRef.current
     if (!menu) return
     const toggle = toggleRef.current
 
-    const focusables = Array.from(menu.querySelectorAll<HTMLElement>('a[href], button'))
-    focusables[0]?.focus()
+    const lenis = getLenis()
+    lenis?.stop()
+    document.body.style.overflow = 'hidden'
+
+    const focusables: HTMLElement[] = [
+      ...(toggle ? [toggle] : []),
+      ...Array.from(menu.querySelectorAll<HTMLElement>('a[href], button')),
+    ]
+    focusables[1]?.focus()
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -78,6 +101,8 @@ export default function Navigation() {
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = ''
+      lenis?.start()
       toggle?.focus()
     }
   }, [menuOpen])
@@ -85,8 +110,7 @@ export default function Navigation() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     setMenuOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    scrollToHash(href)
   }
 
   return (
@@ -116,14 +140,15 @@ export default function Navigation() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  aria-current={isActive ? 'true' : undefined}
-                  className={`relative font-sans text-[14px] tracking-tight transition-colors ${
+                  aria-current={isActive ? 'location' : undefined}
+                  className={`relative inline-flex items-center min-h-[32px] font-sans text-[14px] tracking-tight transition-colors ${
                     isActive ? 'text-cream' : 'text-stone-muted hover:text-cream'
                   }`}
                 >
                   {link.label}
                   <span
-                    className={`absolute -bottom-1.5 left-0 h-px bg-cyan transition-all duration-300 ${
+                    aria-hidden="true"
+                    className={`absolute bottom-1 left-0 h-px bg-cyan transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0'
                     }`}
                   />
@@ -153,28 +178,52 @@ export default function Navigation() {
       </header>
 
       {/* Mobile overlay */}
-      <div
-        id="mobile-menu"
-        ref={menuRef}
-        inert={!menuOpen}
-        className={`fixed inset-0 z-40 bg-graphite-deep/97 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-opacity duration-300 lg:hidden ${
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            onClick={(e) => handleNavClick(e, link.href)}
-            className="font-display text-2xl text-cream hover:text-cyan transition-colors"
+      <AnimatePresence>
+        {menuOpen && (
+          <m.div
+            id="mobile-menu"
+            ref={menuRef}
+            variants={menuVariants}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="fixed inset-0 z-40 bg-graphite-deep/[0.97] backdrop-blur-xl overflow-y-auto lg:hidden"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
           >
-            {link.label}
-          </a>
-        ))}
-        <a href={CV_HREF} target="_blank" rel="noopener noreferrer" className="btn-secondary mt-4">
-          Download CV
-        </a>
-      </div>
+            <nav
+              aria-label="Mobile"
+              className="min-h-full flex flex-col items-center justify-center py-24 gap-[clamp(0.75rem,2.5vh,1.25rem)]"
+            >
+              {navLinks.map((link, i) => (
+                <m.a
+                  key={link.href}
+                  variants={menuItemVariants}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="group inline-flex items-baseline gap-3 font-display text-[clamp(1.75rem,7vw,2.5rem)] text-cream hover:text-cyan transition-colors"
+                >
+                  <span aria-hidden="true" className="font-mono text-[12px] tracking-widest text-brass">
+                    0{i + 1}
+                  </span>
+                  {link.label}
+                </m.a>
+              ))}
+              <m.a
+                variants={menuItemVariants}
+                href={CV_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary mt-4"
+              >
+                Download CV
+              </m.a>
+            </nav>
+          </m.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

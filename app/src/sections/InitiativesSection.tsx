@@ -27,7 +27,7 @@ function StatusTag({ children }: { children: string }) {
 
 export default function InitiativesSection() {
   return (
-    <section id="initiatives" className="section bg-graphite">
+    <section id="initiatives" className="section section-seam bg-graphite">
       <div className="shell">
         <SectionHeader
           index="05"
@@ -58,16 +58,17 @@ export default function InitiativesSection() {
               </div>
 
               <p className="body-text mt-6">
-                An initiative to encode years of manual SSO research into repeatable detection logic — modeling the trust
-                relationships a scanner ignores. The aim isn't to replace judgment, but to make the patterns I document
-                reusable. It is in active development, not a finished product.
+                An initiative to turn six years of documented SSO research — my own finding-by-finding dataset — into
+                adversarial reasoning a scanner can't replicate: modeling the trust relationships automated tools ignore.
+                The aim isn't to replace judgment, but to make the patterns I document reusable. It is in active
+                development, not a finished product.
               </p>
 
               <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 border-t border-[var(--hairline)] pt-7">
                 {zenGuardGoals.map((g) => (
                   <div key={g.title}>
                     <h4 className="font-sans text-cream text-[0.98rem] font-medium">{g.title}</h4>
-                    <p className="body-text mt-1 !text-[0.9rem]">{g.desc}</p>
+                    <p className="body-sm mt-1">{g.desc}</p>
                   </div>
                 ))}
               </div>
@@ -95,8 +96,9 @@ export default function InitiativesSection() {
               </div>
 
               <p className="body-text mt-6">
-                An early-stage initiative to connect vetted local researchers with organizations across South Asia, using
-                the same detection-pattern approach — building the vetting and triage side first.
+                An early-stage initiative building toward South Asia's first indigenous managed bug-bounty platform —
+                connecting vetted local researchers with organizations across the region, starting with the vetting and
+                triage layer.
               </p>
 
               <ul className="mt-6 space-y-3 border-t border-[var(--hairline)] pt-6">

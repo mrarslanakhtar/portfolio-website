@@ -10,6 +10,7 @@ type SafeImageProps = {
   height?: number
   avifSrc?: string
   webpSrc?: string
+  fetchPriority?: 'high' | 'low' | 'auto'
 }
 
 function initialsFrom(alt: string) {
@@ -32,6 +33,7 @@ export default function SafeImage({
   height,
   avifSrc,
   webpSrc,
+  fetchPriority,
 }: SafeImageProps) {
   const [failed, setFailed] = useState(false)
   const initials = useMemo(() => fallbackText ?? initialsFrom(alt), [alt, fallbackText])
@@ -64,6 +66,8 @@ export default function SafeImage({
         height={height}
         className={`object-cover object-center ${className || ''}`.trim()}
         loading={loading}
+        decoding="async"
+        fetchPriority={fetchPriority}
         onError={() => setFailed(true)}
       />
     </picture>

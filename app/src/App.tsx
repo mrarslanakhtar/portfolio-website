@@ -1,39 +1,62 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
-import { AnimatePresence, MotionConfig } from 'framer-motion'
+import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'framer-motion'
 
 import Preloader from '@/components/Preloader'
 import Navigation from '@/components/Navigation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
-import LazySection from '@/components/LazySection'
 import HeroSection from '@/sections/HeroSection'
 import ProofSection from '@/sections/ProofSection'
+import CaseStudiesSection from '@/sections/CaseStudiesSection'
+import AdvisorySection from '@/sections/AdvisorySection'
+import CapabilitiesSection from '@/sections/CapabilitiesSection'
+import InitiativesSection from '@/sections/InitiativesSection'
+import WritingSection from '@/sections/WritingSection'
+import BackgroundSection from '@/sections/BackgroundSection'
 import ContactSection from '@/sections/ContactSection'
 import FooterSection from '@/sections/FooterSection'
+import { registerLenis } from '@/lib/scroll'
 
-// Below-fold sections are code-split and only fetched as they near the viewport.
-const AdvisorySection = lazy(() => import('@/sections/AdvisorySection'))
-const CaseStudiesSection = lazy(() => import('@/sections/CaseStudiesSection'))
-const CapabilitiesSection = lazy(() => import('@/sections/CapabilitiesSection'))
-const InitiativesSection = lazy(() => import('@/sections/InitiativesSection'))
-const WritingSection = lazy(() => import('@/sections/WritingSection'))
-const BackgroundSection = lazy(() => import('@/sections/BackgroundSection'))
+// Sections mount statically: every anchor target exists from first paint
+// (in-page navigation and scrollspy need real elements), while
+// content-visibility: auto on .section keeps off-screen render cost low.
+// The old per-section JS chunks saved ~20KB at the price of broken anchors.
 
 // Play the boot sequence at most once per session, and never under
 // reduced-motion (that path already lands straight on content).
 function shouldBoot() {
   if (typeof window === 'undefined') return false
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-  return sessionStorage.getItem('booted') !== '1'
+  // Storage throws under "block all cookies" privacy modes — never let the
+  // boot flourish take down the page.
+  try {
+    return sessionStorage.getItem('booted') !== '1'
+  } catch {
+    return true
+  }
 }
 
 export default function App() {
   const [booting, setBooting] = useState(shouldBoot)
 
   const finishBoot = () => {
-    sessionStorage.setItem('booted', '1')
+    try {
+      sessionStorage.setItem('booted', '1')
+    } catch {
+      // Storage unavailable: the sequence simply plays once per load.
+    }
     setBooting(false)
   }
+
+  // The boot overlay should hold a still page — inert stops interaction but
+  // not wheel/touch scrolling underneath.
+  useEffect(() => {
+    if (!booting) return
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [booting])
 
   useEffect(() => {
     // Lenis smooth scroll is a motion enhancement — skip under reduced-motion.
@@ -44,6 +67,7 @@ export default function App() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       touchMultiplier: 2,
     })
+    registerLenis(lenis)
 
     let raf = 0
     const loop = (time: number) => {
@@ -54,33 +78,45 @@ export default function App() {
 
     return () => {
       cancelAnimationFrame(raf)
+      registerLenis(null)
       lenis.destroy()
     }
   }, [])
 
   return (
     <MotionConfig reducedMotion="user">
+      {/* LazyMotion + m.* components keep only the DOM-animation subset of
+          framer-motion on the critical path. */}
+      <LazyMotion features={domAnimation} strict>
+      <div className="atmosphere" aria-hidden="true" />
+      <div className="grain" aria-hidden="true" />
+
       <AnimatePresence>
         {booting && <Preloader onComplete={finishBoot} />}
       </AnimatePresence>
 
-      <a href="#main-content" className="skip-link">Skip to content</a>
-      <ScrollProgressBar />
-      <Navigation />
+      {/* While the boot overlay is up, everything beneath it leaves the tab
+          order and accessibility tree. */}
+      <div inert={booting || undefined} className="relative z-10">
+        <a href="#main-content" className="skip-link">Skip to content</a>
+        <ScrollProgressBar />
+        <Navigation />
 
-      <main id="main-content" tabIndex={-1} className="focus:outline-none">
-        <HeroSection />
-        <ProofSection />
-        <LazySection><Suspense fallback={null}><AdvisorySection /></Suspense></LazySection>
-        <LazySection><Suspense fallback={null}><CaseStudiesSection /></Suspense></LazySection>
-        <LazySection><Suspense fallback={null}><CapabilitiesSection /></Suspense></LazySection>
-        <LazySection><Suspense fallback={null}><InitiativesSection /></Suspense></LazySection>
-        <LazySection><Suspense fallback={null}><WritingSection /></Suspense></LazySection>
-        <LazySection><Suspense fallback={null}><BackgroundSection /></Suspense></LazySection>
-        <ContactSection />
-      </main>
+        <main id="main-content" tabIndex={-1} className="focus:outline-none">
+          <HeroSection booting={booting} />
+          <ProofSection />
+          <CaseStudiesSection />
+          <AdvisorySection />
+          <CapabilitiesSection />
+          <InitiativesSection />
+          <WritingSection />
+          <BackgroundSection />
+          <ContactSection />
+        </main>
 
-      <FooterSection />
+        <FooterSection />
+      </div>
+      </LazyMotion>
     </MotionConfig>
   )
 }

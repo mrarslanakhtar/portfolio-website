@@ -1,5 +1,7 @@
+import { m, type Variants } from 'framer-motion'
 import SectionHeader from '@/components/SectionHeader'
 import MagneticButton from '@/components/MagneticButton'
+import { EASE } from '@/lib/motion'
 
 const EMAIL = 'mrarslan5156@gmail.com'
 const MAILTO = `mailto:${EMAIL}?subject=Advisory%20enquiry`
@@ -16,9 +18,18 @@ const platforms = [
   { label: 'Medium', href: 'https://medium.com/@mrarslanakhtar' },
 ]
 
+const colVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+}
+const rowVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+}
+
 export default function ContactSection() {
   return (
-    <section id="contact" className="section bg-graphite-deep">
+    <section id="contact" className="section section-seam bg-graphite-deep">
       <div className="shell">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.8fr] gap-12 lg:gap-20 items-start">
           {/* Invitation */}
@@ -27,41 +38,47 @@ export default function ContactSection() {
               index="08"
               label="Contact"
               title="Worried about an SSO or access-control gap? Let's look at it."
-              lede="Available for advisory engagements, identity and access-control assessments, and executive briefings. The best first message is a specific one — the system, the boundary, what's keeping you up."
+              lede="Available for advisory engagements, identity and access-control assessments, and executive briefings. The best first message is a specific one: the system, the boundary you're unsure about, and what it protects."
             />
             <div className="mt-9">
               <MagneticButton href={MAILTO} className="btn-primary">Start an advisory conversation</MagneticButton>
             </div>
           </div>
 
-          {/* Details */}
-          <div>
-            <div className="data-label text-cream/70 mb-2">Direct</div>
+          {/* Details — resolves alongside the header instead of popping in. */}
+          <m.div
+            variants={colVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <m.div variants={rowVariants} className="data-label text-cream/70 mb-2">Direct</m.div>
             {directLines.map((c) => (
-              <a
+              <m.a
                 key={c.label}
+                variants={rowVariants}
                 href={c.href}
                 target={c.href.startsWith('http') ? '_blank' : undefined}
-                rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="group flex items-baseline justify-between gap-4 py-4 border-t border-[var(--hairline)]"
+                rel={c.href.startsWith('http') ? 'me noopener noreferrer' : undefined}
+                className="group flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 py-4 border-t border-[var(--hairline)]"
               >
                 <span className="data-label">{c.label}</span>
-                <span className="font-mono text-[13px] text-cream/85 group-hover:text-cyan transition-colors text-right">
+                <span className="font-mono text-[13px] text-cream/85 group-hover:text-cyan break-all sm:break-normal sm:text-right transition-[color,transform] motion-safe:group-hover:-translate-x-0.5">
                   {c.value}
                 </span>
-              </a>
+              </m.a>
             ))}
-            <div className="border-t border-[var(--hairline)]" />
+            <m.div variants={rowVariants} className="border-t border-[var(--hairline)]" />
 
-            <div className="data-label text-cream/70 mt-10 mb-2">Verify the record</div>
-            <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
+            <m.div variants={rowVariants} className="data-label text-cream/70 mt-10 mb-2">Verify the record</m.div>
+            <m.div variants={rowVariants} className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
               {platforms.map((p) => (
-                <a key={p.label} href={p.href} target="_blank" rel="noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide">
+                <a key={p.label} href={p.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide">
                   {p.label} <span aria-hidden="true">↗</span>
                 </a>
               ))}
-            </div>
-          </div>
+            </m.div>
+          </m.div>
         </div>
       </div>
     </section>

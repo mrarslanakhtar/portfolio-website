@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
@@ -11,13 +10,6 @@ module.exports = {
           deep: '#0B0F18',
           surface: '#161C2B',
           raised: '#1E2740',
-        },
-        // Kept for backward-compatible class names; mapped onto the graphite base.
-        navy: {
-          DEFAULT: '#0F1420',
-          deep: '#0F1420',
-          surface: '#161C2B',
-          rich: '#1E2740',
         },
         // Cyan is a *signal* color: links, active state, data emphasis — used sparingly.
         cyan: {
@@ -41,7 +33,6 @@ module.exports = {
         // mono reserved for data + labels.
         display: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {

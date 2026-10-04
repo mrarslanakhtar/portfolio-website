@@ -1,4 +1,6 @@
+import { m } from 'framer-motion'
 import ScrollRevealText from '@/components/ScrollRevealText'
+import { EASE } from '@/lib/motion'
 
 type SectionHeaderProps = {
   index: string
@@ -9,8 +11,9 @@ type SectionHeaderProps = {
   id?: string
 }
 
-// Consistent editorial section head: a brass index + quiet eyebrow, a serif
-// title, and an optional lede. Reveal is a single subtle fade (mode="line").
+// Consistent editorial section head: a brass index + quiet eyebrow whose
+// hairline draws itself in, a serif title revealed word by word, and an
+// optional lede.
 export default function SectionHeader({ index, label, title, lede, align = 'left', id }: SectionHeaderProps) {
   const center = align === 'center'
   return (
@@ -18,11 +21,18 @@ export default function SectionHeader({ index, label, title, lede, align = 'left
       <ScrollRevealText mode="line" className="mb-5">
         <span className={`eyebrow ${center ? 'justify-center' : ''}`}>
           <span className="eyebrow-index">{index}</span>
-          <span className="h-px w-8 bg-[var(--hairline-strong)]" aria-hidden="true" />
+          <m.span
+            className="h-px w-8 bg-[var(--hairline-strong)] origin-left"
+            aria-hidden="true"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}
+          />
           {label}
         </span>
       </ScrollRevealText>
-      <ScrollRevealText mode="line" as="h2" className="section-title" delay={0.05}>
+      <ScrollRevealText mode="words" as="h2" className="section-title" delay={0.05}>
         {title}
       </ScrollRevealText>
       {lede && (
