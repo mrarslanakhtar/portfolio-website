@@ -109,6 +109,12 @@ export default function Navigation() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
+    // Restart Lenis *before* scrolling. Lenis.start() calls reset(), which
+    // kills any in-flight animation — if the menu-close effect cleanup ran
+    // it a few ms after scrollTo, the jump would be cancelled (verified in
+    // lenis 1.3). Started here, the cleanup's start() is a no-op.
+    getLenis()?.start()
+    document.body.style.overflow = ''
     setMenuOpen(false)
     scrollToHash(href)
   }
