@@ -5,6 +5,8 @@ import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'framer-
 import Preloader from '@/components/Preloader'
 import Navigation from '@/components/Navigation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
+import CustomCursor from '@/components/CustomCursor'
+import SpotlightEffect from '@/components/SpotlightEffect'
 import HeroSection from '@/sections/HeroSection'
 import ProofSection from '@/sections/ProofSection'
 import CaseStudiesSection from '@/sections/CaseStudiesSection'
@@ -90,6 +92,8 @@ export default function App() {
       <LazyMotion features={domAnimation} strict>
       <div className="atmosphere" aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
+      <CustomCursor />
+      <SpotlightEffect />
 
       <AnimatePresence>
         {booting && <Preloader onComplete={finishBoot} />}

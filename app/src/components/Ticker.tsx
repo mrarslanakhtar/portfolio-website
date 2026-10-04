@@ -1,3 +1,7 @@
+import { useRef } from 'react'
+import { m, useAnimationFrame, useMotionValue, useReducedMotion } from 'framer-motion'
+import { getLenis } from '@/lib/scroll'
+
 const ITEMS = [
   'SSO',
   'IAM',
@@ -11,10 +15,30 @@ const ITEMS = [
   'Islamabad · Remote',
 ]
 
-// Slow marquee of the practice vocabulary. Rendered twice for a seamless
-// loop; the second copy is hidden from assistive tech. Pauses on hover and
-// stops entirely under reduced-motion (then it just wraps).
+// Marquee of the practice vocabulary. Driven per-frame rather than by a CSS
+// keyframe so it reacts to scrolling: wheel velocity from Lenis speeds it up
+// (and reverses it on the way back up). Rendered twice for a seamless loop;
+// the second copy is hidden from assistive tech. Static under reduced-motion.
 export default function Ticker() {
+  const reduced = useReducedMotion()
+  const trackRef = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const offset = useRef(0)
+
+  useAnimationFrame((_, delta) => {
+    if (reduced) return
+    const track = trackRef.current
+    if (!track) return
+    const half = track.scrollWidth / 2
+    if (!half) return
+    const velocity = getLenis()?.velocity ?? 0
+    // Base drift plus a scroll-coupled term, clamped so a flick can't blur it.
+    const speed = 40 + Math.max(-240, Math.min(240, velocity * 6))
+    offset.current = (offset.current - (speed * delta) / 1000) % half
+    if (offset.current > 0) offset.current -= half
+    x.set(offset.current)
+  })
+
   const row = (hidden: boolean) => (
     <span className="inline-flex items-center" aria-hidden={hidden || undefined}>
       {ITEMS.map((item) => (
@@ -25,12 +49,13 @@ export default function Ticker() {
       ))}
     </span>
   )
+
   return (
     <div className="ticker border-y border-[var(--hairline)] py-4">
-      <div className="ticker-track">
+      <m.div ref={trackRef} className="ticker-track" style={reduced ? undefined : { x }}>
         {row(false)}
         {row(true)}
-      </div>
+      </m.div>
     </div>
   )
 }

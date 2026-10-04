@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { m } from 'framer-motion'
+import { animate, m } from 'framer-motion'
 import { EASE } from '@/lib/motion'
 
 const LINES = ['Establishing secure session', 'Verifying identity', 'Access granted']
@@ -10,6 +10,7 @@ const TOTAL = GRANTED_AT + HOLD + 380 // ≈1.38s; the hero stagger overlaps the
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [visibleLines, setVisibleLines] = useState(1)
+  const [pct, setPct] = useState(0)
 
   useEffect(() => {
     const timers: number[] = []
@@ -17,7 +18,16 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       timers.push(window.setTimeout(() => setVisibleLines(i), LINE_INTERVAL * (i - 1)))
     }
     timers.push(window.setTimeout(onComplete, TOTAL))
-    return () => timers.forEach(clearTimeout)
+    // The counter lands on 100 together with the bar and "Access granted".
+    const counter = animate(0, 100, {
+      duration: GRANTED_AT / 1000,
+      ease: EASE,
+      onUpdate: (v) => setPct(Math.round(v)),
+    })
+    return () => {
+      timers.forEach(clearTimeout)
+      counter.stop()
+    }
   }, [onComplete])
 
   return (
@@ -30,6 +40,13 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       aria-label="Loading"
     >
       <div className="w-[min(90vw,440px)] px-6 font-mono text-[13px] md:text-sm">
+        <div className="flex items-end justify-between mb-7">
+          <span className="data-label">Boot sequence</span>
+          <span aria-hidden="true" className="font-display text-cream text-5xl md:text-6xl leading-none tabular-nums">
+            {String(pct).padStart(3, '0')}
+            <span className="font-mono text-cyan text-lg align-top ml-1">%</span>
+          </span>
+        </div>
         <div className="space-y-2.5">
           {LINES.map((line, i) => {
             if (i >= visibleLines) return null

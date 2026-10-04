@@ -1,6 +1,36 @@
+import { useRef, type CSSProperties, type ReactNode } from 'react'
+import { m, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import ScrollRevealText from '@/components/ScrollRevealText'
 import SectionHeader from '@/components/SectionHeader'
 import GhostIndex from '@/components/GhostIndex'
+import TiltCard from '@/components/TiltCard'
+
+// One card of the sticky stack: pinned below the header with a per-card
+// offset so each successive card slides over the last, while the covered
+// cards recede (scale + dim) in proportion to the stack's scroll progress.
+function StackCard({
+  index,
+  total,
+  progress,
+  children,
+}: {
+  index: number
+  total: number
+  progress: MotionValue<number>
+  children: ReactNode
+}) {
+  const reduced = useReducedMotion()
+  const start = index / total
+  const scale = useTransform(progress, [start, 1], [1, 1 - 0.06 * (total - 1 - index)])
+  const opacity = useTransform(progress, [start, 1], [1, 1 - 0.35 * (total - 1 - index)])
+  return (
+    <div className="stack-card" style={{ '--stack-offset': `${index * 28}px` } as CSSProperties}>
+      <m.div style={reduced ? undefined : { scale, opacity, transformOrigin: 'center top' }}>
+        {children}
+      </m.div>
+    </div>
+  )
+}
 
 type CaseStudy = {
   program: string
@@ -60,6 +90,9 @@ function SeverityTag({ severity }: { severity: 'Critical' | 'High' }) {
 }
 
 export default function CaseStudiesSection() {
+  const stackRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: stackRef, offset: ['start 96px', 'end end'] })
+
   return (
     <section id="work" className="section section-seam section-ghost bg-graphite-deep">
       <GhostIndex n="02" />
@@ -71,9 +104,11 @@ export default function CaseStudiesSection() {
           lede="A selection of bug-bounty disclosures, framed the way a decision-maker reads them: which boundary was crossed, how it was found, and what it put at risk."
         />
 
-        <div className="mt-14 space-y-6">
+        <div ref={stackRef} className="mt-14 space-y-6">
           {featured.map((c, i) => (
-            <ScrollRevealText key={c.program} mode="line">
+            <StackCard key={c.program} index={i} total={featured.length} progress={scrollYProgress}>
+            <ScrollRevealText mode="line">
+              <TiltCard>
               <article className="card card-lift p-7 lg:p-9">
                 <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 pb-6 border-b border-[var(--hairline)]">
                   <span aria-hidden="true" className="font-display text-brass text-[2rem] md:text-[2.6rem] leading-none">
@@ -98,7 +133,9 @@ export default function CaseStudiesSection() {
                   </div>
                 </div>
               </article>
+              </TiltCard>
             </ScrollRevealText>
+            </StackCard>
           ))}
         </div>
 

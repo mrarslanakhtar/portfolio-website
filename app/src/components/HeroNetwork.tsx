@@ -72,10 +72,21 @@ export default function HeroNetwork() {
     let width = 0
     let height = 0
     let dpr = 1
+    let rect = canvas.getBoundingClientRect()
+
+    // Pointer: a gentle tilt of the whole cloud toward the cursor, and nodes
+    // near it brighten — the graph notices you. Fine pointers only.
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    let pointerX = -1e4
+    let pointerY = -1e4
+    let tiltY = 0
+    let tiltX = 0
+    let targetTiltY = 0
+    let targetTiltX = 0
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 1.75)
-      const rect = canvas.getBoundingClientRect()
+      rect = canvas.getBoundingClientRect()
       width = rect.width
       height = rect.height
       canvas.width = Math.round(width * dpr)
@@ -84,28 +95,45 @@ export default function HeroNetwork() {
 
     const onScroll = () => {
       scrollY = window.scrollY
+      rect = canvas.getBoundingClientRect()
+    }
+
+    const onPointer = (e: PointerEvent) => {
+      pointerX = e.clientX - rect.left
+      pointerY = e.clientY - rect.top
+      targetTiltY = (pointerX / width - 0.5) * 0.3
+      targetTiltX = (pointerY / height - 0.5) * -0.2
+    }
+    const onPointerLeave = () => {
+      pointerX = -1e4
+      pointerY = -1e4
+      targetTiltY = 0
+      targetTiltX = 0
     }
 
     // Projected node buffer, reused across frames.
     const px = new Float32Array(NODE_COUNT)
     const py = new Float32Array(NODE_COUNT)
     const pz = new Float32Array(NODE_COUNT)
+    const near = new Float32Array(NODE_COUNT)
 
     const draw = (now: number) => {
       const delta = Math.min((now - last) / 1000, 0.1)
       last = now
 
-      // Slow ambient rotation + subtle scroll-tied parallax (not mouse-reactive).
+      // Slow ambient rotation + subtle scroll-tied parallax + pointer tilt.
       rotY += delta * 0.045
       const targetX = scrollY * 0.0005
       rotX += (targetX - rotX) * 0.04
+      tiltY += (targetTiltY - tiltY) * 0.05
+      tiltX += (targetTiltX - tiltX) * 0.05
       const liftY = Math.min(scrollY * 0.001, 3)
 
       const focal = height / 2 / Math.tan(((FOV / 2) * Math.PI) / 180)
-      const cosY = Math.cos(rotY)
-      const sinY = Math.sin(rotY)
-      const cosX = Math.cos(rotX)
-      const sinX = Math.sin(rotX)
+      const cosY = Math.cos(rotY + tiltY)
+      const sinY = Math.sin(rotY + tiltY)
+      const cosX = Math.cos(rotX + tiltX)
+      const sinX = Math.sin(rotX + tiltX)
       const cx = width / 2
       const cy = height / 2
 
@@ -122,6 +150,10 @@ export default function HeroNetwork() {
         px[i] = cx + x1 * s
         py[i] = cy - y2 * s
         pz[i] = depth
+        // Proximity to the pointer, 0–1 within a 170px radius.
+        const dx = px[i] - pointerX
+        const dy = py[i] - pointerY
+        near[i] = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy) / 170)
       }
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -136,6 +168,17 @@ export default function HeroNetwork() {
         ctx.lineTo(px[b], py[b])
       }
       ctx.stroke()
+
+      // Links touching a node near the pointer light up.
+      for (const [a, b] of links) {
+        const glow = Math.max(near[a], near[b])
+        if (glow <= 0) continue
+        ctx.strokeStyle = `rgba(0, 229, 255, ${(0.08 + 0.5 * glow).toFixed(3)})`
+        ctx.beginPath()
+        ctx.moveTo(px[a], py[a])
+        ctx.lineTo(px[b], py[b])
+        ctx.stroke()
+      }
 
       // Signal pulses: bright points traveling along a few links — traffic
       // crossing the trust chain. Staggered phases, slow cadence.
@@ -155,9 +198,10 @@ export default function HeroNetwork() {
       }
 
       for (let i = 0; i < NODE_COUNT; i++) {
-        // Size and alpha attenuate with depth, like sizeAttenuation did.
-        const r = Math.max((0.035 * focal) / pz[i], 0.8)
-        const alpha = Math.min(0.7, (0.7 * 10) / (pz[i] * 1.6))
+        // Size and alpha attenuate with depth, like sizeAttenuation did;
+        // nodes near the pointer swell and brighten.
+        const r = Math.max((0.035 * focal) / pz[i], 0.8) * (1 + near[i] * 1.4)
+        const alpha = Math.min(1, Math.min(0.7, (0.7 * 10) / (pz[i] * 1.6)) + near[i] * 0.5)
         ctx.fillStyle = `rgba(0, 229, 255, ${alpha.toFixed(3)})`
         ctx.beginPath()
         ctx.arc(px[i], py[i], r, 0, Math.PI * 2)
@@ -193,12 +237,18 @@ export default function HeroNetwork() {
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
     window.addEventListener('scroll', onScroll, { passive: true })
+    if (finePointer) {
+      window.addEventListener('pointermove', onPointer, { passive: true })
+      document.documentElement.addEventListener('mouseleave', onPointerLeave)
+    }
 
     return () => {
       stop()
       io.disconnect()
       ro.disconnect()
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('pointermove', onPointer)
+      document.documentElement.removeEventListener('mouseleave', onPointerLeave)
     }
   }, [])
 

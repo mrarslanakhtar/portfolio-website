@@ -54,7 +54,7 @@ export default function BackgroundSection() {
         <ScrollRevealText mode="line" className="mt-12">
           <div className="grid grid-cols-2 gap-4 max-w-xl">
             <figure>
-              <div className="rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
+              <div className="photo-reveal rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
                 <SafeImage
                   src="/images/headshot-bw.jpg"
                   avifSrc="/images/headshot-bw.avif"
@@ -70,7 +70,7 @@ export default function BackgroundSection() {
               <figcaption className="data-label mt-2">Portrait</figcaption>
             </figure>
             <figure>
-              <div className="rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
+              <div className="photo-reveal rounded-lg overflow-hidden border border-[var(--hairline-strong)]">
                 <SafeImage
                   src="/images/hero-photo.jpg"
                   avifSrc="/images/hero-photo.avif"

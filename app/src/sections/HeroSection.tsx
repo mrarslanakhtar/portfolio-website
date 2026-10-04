@@ -4,6 +4,7 @@ import SafeImage from '@/components/SafeImage'
 import MagneticButton from '@/components/MagneticButton'
 import HeroNetwork from '@/components/HeroNetwork'
 import Ticker from '@/components/Ticker'
+import DecryptText from '@/components/DecryptText'
 import { EASE } from '@/lib/motion'
 import { scrollToHash } from '@/lib/scroll'
 
@@ -42,6 +43,9 @@ export default function HeroSection({ booting = false }: { booting?: boolean }) 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   const portraitY = useTransform(scrollYProgress, [0, 1], [0, 60])
   const textY = useTransform(scrollYProgress, [0, 1], [0, -28])
+  // The statement recedes as the page takes over.
+  const textOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0.12])
+  const textScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.96])
 
   const jump = (href: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
@@ -65,12 +69,17 @@ export default function HeroSection({ booting = false }: { booting?: boolean }) 
       <m.div
         className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[46%] pointer-events-none"
         style={reduced ? undefined : { y: portraitY }}
-        initial={{ opacity: 0 }}
-        animate={booting ? { opacity: 0 } : { opacity: 1 }}
-        transition={{ duration: 1.2, ease: EASE, delay: 0.2 }}
+        initial={{ opacity: 0, clipPath: 'inset(0 0 0 100%)' }}
+        animate={booting ? { opacity: 0, clipPath: 'inset(0 0 0 100%)' } : { opacity: 1, clipPath: 'inset(0 0 0 0%)' }}
+        transition={{ duration: 1.5, ease: EASE, delay: 0.25 }}
         aria-hidden="true"
       >
-        <div className="h-full w-full [mask-image:linear-gradient(90deg,transparent_0%,black_42%,black_100%),linear-gradient(180deg,transparent_0%,black_22%,black_62%,transparent_100%)] [mask-composite:intersect] [-webkit-mask-composite:source-in]">
+        <m.div
+          className="h-full w-full [mask-image:linear-gradient(90deg,transparent_0%,black_42%,black_100%),linear-gradient(180deg,transparent_0%,black_22%,black_62%,transparent_100%)] [mask-composite:intersect] [-webkit-mask-composite:source-in]"
+          initial={{ scale: 1.1 }}
+          animate={booting ? { scale: 1.1 } : { scale: 1 }}
+          transition={{ duration: 1.9, ease: EASE, delay: 0.25 }}
+        >
           <SafeImage
             src="/images/office.jpg"
             avifSrc="/images/office.avif"
@@ -83,7 +92,7 @@ export default function HeroSection({ booting = false }: { booting?: boolean }) 
             fetchPriority="high"
             fallbackText=""
           />
-        </div>
+        </m.div>
       </m.div>
 
       <div className="shell-wide relative z-10 flex-1 flex flex-col justify-center pt-28 pb-10 md:pt-28 lg:pb-12">
@@ -91,7 +100,7 @@ export default function HeroSection({ booting = false }: { booting?: boolean }) 
           variants={container}
           initial="hidden"
           animate={booting ? 'hidden' : 'show'}
-          style={reduced ? undefined : { y: textY }}
+          style={reduced ? undefined : { y: textY, opacity: textOpacity, scale: textScale, transformOrigin: 'left center' }}
           className="lg:max-w-[78%]"
         >
           <m.div variants={item} className="eyebrow mb-8">
@@ -101,13 +110,18 @@ export default function HeroSection({ booting = false }: { booting?: boolean }) 
             <span className="hidden sm:inline text-stone-muted/70">· SSO & IAM security researcher</span>
           </m.div>
 
+          {/* The statement decrypts out of cipher noise, line by line. */}
           <m.h1 variants={item} className="display-title">
             <span className="sr-only">Muhammad Arslan Akhtar — SSO &amp; IAM security researcher. </span>
-            I find where
+            <DecryptText text="I find where" play={!booting} duration={900} delay={100} />
             <br />
-            identity trust
+            <DecryptText text="identity trust" play={!booting} duration={900} delay={320} />
             <br />
-            chains <span className="italic text-brass">break</span>.
+            <DecryptText text="chains" play={!booting} duration={800} delay={540} />{' '}
+            <span className="italic text-brass">
+              <DecryptText text="break" play={!booting} duration={1000} delay={760} />
+            </span>
+            .
           </m.h1>
         </m.div>
 

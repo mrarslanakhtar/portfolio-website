@@ -118,6 +118,28 @@ brand (graphite / cyan / brass, Playfair + Inter + JetBrains Mono):
 - Case-study cards lead with large brass numerals and section-title names;
   capability cells draw a cyan scan-line across the top on hover.
 
+### Motion pass (V4.2) — advanced interaction layer
+All framer-motion + CSS (no new dependencies, +8KB to the app chunk), every
+effect gated to fine pointers and off under reduced-motion:
+- **Custom cursor**: cyan dot + spring-lagged hairline ring, swelling over
+  links, collapsing over text, `mix-blend-difference` so it reads on cream.
+- **Decrypting headline**: the statement resolves out of cipher glyphs line
+  by line as the preloader hands off (real text stays in the a11y tree).
+- **Boot counter**: 000→100% in the preloader, landing with the bar.
+- **Portrait reveal**: clip-path wipe from the right + slow settle from 1.1×.
+- **Hero recedes on scroll** (opacity/scale) while the portrait parallaxes.
+- **Pointer-reactive network**: the node cloud tilts toward the cursor;
+  nodes and links near it swell and light up.
+- **Scroll-velocity ticker**: the marquee is driven per frame and couples
+  to Lenis velocity — scrolling speeds it up, scrolling back reverses it.
+- **Sticky-stacking case studies**: each card pins and the next slides over
+  it; covered cards scale down and dim with the stack's scroll progress.
+- **3D tilt + cursor spotlight** on cards (one delegated listener feeds
+  every `.card` its pointer position as CSS variables).
+- **Parallax ghost numerals** drift slower than the page.
+- **Live film grain** (8-step stepped animation on an oversized tile).
+- **Photos**: monochrome at rest, colour + slow zoom on hover.
+
 ## Verification status
 `npm ci`, `npm run lint`, `npm run build` and Playwright screenshots (desktop
 hero/mid-page) were green through the three.js/fonts/countup stage. A
