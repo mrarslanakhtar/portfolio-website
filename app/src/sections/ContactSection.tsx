@@ -67,7 +67,7 @@ export default function ContactSection() {
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <m.div variants={rowVariants} className="data-label text-cream/70 mb-2">Direct</m.div>
+            <m.div variants={rowVariants} className="data-label !text-[13px] text-cream/70 mb-3">Direct</m.div>
             {directLines.map((c) => (
               <m.a
                 key={c.label}
@@ -75,20 +75,20 @@ export default function ContactSection() {
                 href={c.href}
                 target={c.href.startsWith('http') ? '_blank' : undefined}
                 rel={c.href.startsWith('http') ? 'me noopener noreferrer' : undefined}
-                className="group flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 py-4 border-t border-[var(--hairline)]"
+                className="group flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 py-5 border-t border-[var(--hairline)]"
               >
-                <span className="data-label">{c.label}</span>
-                <span className="font-mono text-[14px] text-cream/85 group-hover:text-cyan break-all sm:break-normal sm:text-right transition-[color,transform] motion-safe:group-hover:-translate-x-0.5">
+                <span className="data-label !text-[13px]">{c.label}</span>
+                <span className="font-mono text-[1.05rem] md:text-[1.15rem] text-cream group-hover:text-cyan break-all sm:break-normal sm:text-right transition-[color,transform] motion-safe:group-hover:-translate-x-0.5">
                   {c.value}
                 </span>
               </m.a>
             ))}
             <m.div variants={rowVariants} className="border-t border-[var(--hairline)]" />
 
-            <m.div variants={rowVariants} className="data-label text-cream/70 mt-10 mb-2">Verify the record</m.div>
-            <m.div variants={rowVariants} className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
+            <m.div variants={rowVariants} className="data-label !text-[13px] text-cream/70 mt-12 mb-3">Verify the record</m.div>
+            <m.div variants={rowVariants} className="flex flex-wrap gap-x-8 gap-y-3 pt-2">
               {platforms.map((p) => (
-                <a key={p.label} href={p.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[13px] tracking-wide">
+                <a key={p.label} href={p.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[1.05rem] tracking-wide">
                   {p.label} <span aria-hidden="true">↗</span>
                 </a>
               ))}

@@ -82,7 +82,7 @@ export default function ProofSection() {
                   <p className="body-sm mt-1">{r.detail}</p>
                 </div>
                 {r.href && (
-                  <a href={r.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[13px] tracking-wide whitespace-nowrap">
+                  <a href={r.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[15px] tracking-wide whitespace-nowrap">
                     {r.verify} <span aria-hidden="true">↗</span>
                   </a>
                 )}
