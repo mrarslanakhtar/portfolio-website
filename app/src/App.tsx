@@ -64,10 +64,14 @@ export default function App() {
     // Lenis smooth scroll is a motion enhancement — skip under reduced-motion.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
+    // Frame-based lerp smoothing rather than a fixed-duration glide: each
+    // wheel notch is followed closely, so scrolling feels crisp and direct
+    // instead of floating on past the input.
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
+      lerp: 0.09,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.6,
+      smoothWheel: true,
     })
     registerLenis(lenis)
 

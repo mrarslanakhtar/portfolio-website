@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { m, useMotionValue, useSpring } from 'framer-motion'
 
-// A cyan dot that tracks the pointer exactly, and a hairline ring that
-// follows on a spring. Over interactive elements the ring swells; over text
-// inputs it collapses. Fine pointers with motion allowed only — on touch and
-// under reduced-motion nothing mounts and the native cursor stays.
+type Mode = 'default' | 'link' | 'text'
+
+// Cursor as light. A small cyan point tracks the pointer exactly; a large,
+// soft glow follows on a spring and lights whatever the pointer passes
+// over. Over links the point opens into a translucent disk that sits
+// behind the label; over text it narrows into a thin I-beam. Fine pointers
+// with motion allowed only — on touch and under reduced-motion nothing
+// mounts and the native cursor stays.
 export default function CustomCursor() {
   const [active] = useState(
     () =>
@@ -14,12 +18,12 @@ export default function CustomCursor() {
   )
   const [visible, setVisible] = useState(false)
   const visibleRef = useRef(false)
-  const [mode, setMode] = useState<'default' | 'link' | 'text'>('default')
+  const [mode, setMode] = useState<Mode>('default')
 
-  const x = useMotionValue(-100)
-  const y = useMotionValue(-100)
-  const ringX = useSpring(x, { stiffness: 320, damping: 32, mass: 0.5 })
-  const ringY = useSpring(y, { stiffness: 320, damping: 32, mass: 0.5 })
+  const x = useMotionValue(-200)
+  const y = useMotionValue(-200)
+  const glowX = useSpring(x, { stiffness: 90, damping: 22, mass: 0.9 })
+  const glowY = useSpring(y, { stiffness: 90, damping: 22, mass: 0.9 })
 
   useEffect(() => {
     if (!active) return
@@ -35,7 +39,7 @@ export default function CustomCursor() {
       const target = e.target as Element | null
       if (!target) return
       if (target.closest('a, button, [role="button"], summary')) setMode('link')
-      else if (target.closest('p, h1, h2, h3, li, dd, blockquote')) setMode('text')
+      else if (target.closest('p, h1, h2, h3, h4, li, dd, dt, blockquote, figcaption')) setMode('text')
       else setMode('default')
     }
     const onLeave = () => {
@@ -60,21 +64,35 @@ export default function CustomCursor() {
 
   if (!active) return null
 
-  const ringSize = mode === 'link' ? 56 : mode === 'text' ? 12 : 36
+  const point =
+    mode === 'link'
+      ? { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(0, 229, 255, 0.16)', borderColor: 'rgba(0, 229, 255, 0.55)' }
+      : mode === 'text'
+        ? { width: 2, height: 26, borderRadius: 1, backgroundColor: 'rgba(0, 229, 255, 0.95)', borderColor: 'rgba(0, 229, 255, 0)' }
+        : { width: 7, height: 7, borderRadius: 4, backgroundColor: 'rgba(0, 229, 255, 1)', borderColor: 'rgba(0, 229, 255, 0)' }
 
   return (
     <>
+      {/* The light: a wide, soft cyan glow lagging the pointer. */}
       <m.div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[120] h-2 w-2 rounded-full bg-cyan mix-blend-difference"
-        style={{ x, y, translateX: '-50%', translateY: '-50%', opacity: visible ? 1 : 0 }}
+        className="pointer-events-none fixed left-0 top-0 z-[15] h-[560px] w-[560px] rounded-full mix-blend-screen"
+        style={{
+          x: glowX,
+          y: glowY,
+          translateX: '-50%',
+          translateY: '-50%',
+          opacity: visible ? 1 : 0,
+          background: 'radial-gradient(circle, rgba(0, 229, 255, 0.10) 0%, rgba(0, 229, 255, 0.035) 35%, transparent 65%)',
+        }}
       />
+      {/* The point. */}
       <m.div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[120] rounded-full border border-cream/70 mix-blend-difference"
-        style={{ x: ringX, y: ringY, translateX: '-50%', translateY: '-50%', opacity: visible ? 1 : 0 }}
-        animate={{ width: ringSize, height: ringSize, borderColor: mode === 'link' ? 'rgba(0,229,255,0.9)' : 'rgba(240,240,230,0.7)' }}
-        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+        className="pointer-events-none fixed left-0 top-0 z-[120] border"
+        style={{ x, y, translateX: '-50%', translateY: '-50%', opacity: visible ? 1 : 0, mixBlendMode: mode === 'link' ? 'normal' : 'difference' }}
+        animate={point}
+        transition={{ type: 'spring', stiffness: 420, damping: 30 }}
       />
     </>
   )

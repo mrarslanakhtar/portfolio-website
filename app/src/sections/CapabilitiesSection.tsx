@@ -53,7 +53,7 @@ export default function CapabilitiesSection() {
                 </div>
                 <ul className="mt-5 space-y-2.5">
                   {cap.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-stone-muted text-[0.95rem] leading-relaxed">
+                    <li key={item} className="flex items-start gap-2.5 text-stone-muted text-[1.05rem] leading-relaxed">
                       <span aria-hidden="true" className="mt-2 h-1 w-1 rounded-full bg-cyan/60 flex-shrink-0" />
                       <span>{item}</span>
                     </li>

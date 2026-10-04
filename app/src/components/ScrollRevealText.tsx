@@ -16,20 +16,22 @@ interface ScrollRevealTextProps {
   as?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div'
 }
 
+// Blocks resolve from a soft blur as they rise — focus pulling in, not a
+// plain fade.
 const lineVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 32, filter: 'blur(12px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)' },
 }
 
 const wordParent: Variants = {
   hidden: {},
   // delay arrives via `custom` — a sibling `transition` prop would be
   // overridden by the variant's own transition and silently ignored.
-  show: (delay: number) => ({ transition: { staggerChildren: 0.035, delayChildren: delay } }),
+  show: (delay: number) => ({ transition: { staggerChildren: 0.04, delayChildren: delay } }),
 }
 const wordChild: Variants = {
-  hidden: { y: '110%' },
-  show: { y: '0%', transition: { duration: 0.55, ease: EASE } },
+  hidden: { y: '115%', rotate: 3, filter: 'blur(6px)' },
+  show: { y: '0%', rotate: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: EASE } },
 }
 
 export default function ScrollRevealText({
@@ -78,7 +80,7 @@ export default function ScrollRevealText({
       // amount 0.1 so tall blocks (full cards) can't strand keyboard focus
       // inside a still-hidden element.
       viewport={{ once: true, amount: 0.1, margin: '0px 0px -8% 0px' }}
-      transition={{ duration: 0.6, ease: EASE, delay }}
+      transition={{ duration: 0.85, ease: EASE, delay }}
     >
       {children}
     </MotionTag>

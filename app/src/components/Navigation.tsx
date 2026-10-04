@@ -147,7 +147,7 @@ export default function Navigation() {
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   aria-current={isActive ? 'location' : undefined}
-                  className={`relative inline-flex items-center min-h-[32px] font-sans text-[14px] tracking-tight transition-colors ${
+                  className={`relative inline-flex items-center min-h-[32px] font-sans text-[15px] tracking-tight transition-colors ${
                     isActive ? 'text-cream' : 'text-stone-muted hover:text-cream'
                   }`}
                 >
@@ -211,7 +211,7 @@ export default function Navigation() {
                   onClick={(e) => handleNavClick(e, link.href)}
                   className="group inline-flex items-baseline gap-3 font-display text-[clamp(1.75rem,7vw,2.5rem)] text-cream hover:text-cyan transition-colors"
                 >
-                  <span aria-hidden="true" className="font-mono text-[12px] tracking-widest text-brass">
+                  <span aria-hidden="true" className="font-mono text-[13px] tracking-widest text-brass">
                     0{i + 1}
                   </span>
                   {link.label}

@@ -96,13 +96,13 @@ export default function BackgroundSection() {
               <ScrollRevealText key={r.org} mode="line" delay={i * 0.05}>
                 <div className="py-6 border-t border-[var(--hairline)]">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 className="font-display text-xl text-cream">{r.org}</h3>
-                    <span className="font-mono text-[12px] text-stone-muted">{r.period} · {r.location}</span>
+                    <h3 className="font-display text-2xl text-cream">{r.org}</h3>
+                    <span className="font-mono text-[13px] text-stone-muted">{r.period} · {r.location}</span>
                   </div>
-                  <p className="mt-1 font-sans text-cream/80 text-[0.95rem]">{r.role}</p>
+                  <p className="mt-1 font-sans text-cream/80 text-[1.05rem]">{r.role}</p>
                   <ul className="mt-4 space-y-2">
                     {r.highlights.map((h) => (
-                      <li key={h} className="flex items-start gap-2.5 text-stone-muted text-[0.92rem] leading-relaxed">
+                      <li key={h} className="flex items-start gap-2.5 text-stone-muted text-[1rem] leading-relaxed">
                         <span aria-hidden="true" className="mt-2 h-1 w-1 rounded-full bg-cyan/60 flex-shrink-0" />
                         <span>{h}</span>
                       </li>
@@ -120,11 +120,11 @@ export default function BackgroundSection() {
             {education.map((e, i) => (
               <ScrollRevealText key={e.degree + e.field} mode="line" delay={i * 0.05}>
                 <div className="py-6 border-t border-[var(--hairline)]">
-                  <h3 className="font-display text-xl text-cream">{e.degree}</h3>
-                  <p className="mt-1 font-sans text-cream/80 text-[0.95rem]">{e.field}</p>
+                  <h3 className="font-display text-2xl text-cream">{e.degree}</h3>
+                  <p className="mt-1 font-sans text-cream/80 text-[1.05rem]">{e.field}</p>
                   <ul className="mt-4 space-y-2">
                     {e.notes.map((n) => (
-                      <li key={n} className="flex items-start gap-2.5 text-stone-muted text-[0.92rem] leading-relaxed">
+                      <li key={n} className="flex items-start gap-2.5 text-stone-muted text-[1rem] leading-relaxed">
                         <span aria-hidden="true" className="mt-2 h-1 w-1 rounded-full bg-cyan/60 flex-shrink-0" />
                         <span>{n}</span>
                       </li>

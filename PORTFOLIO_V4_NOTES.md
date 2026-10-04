@@ -140,6 +140,19 @@ effect gated to fine pointers and off under reduced-motion:
 - **Live film grain** (8-step stepped animation on an oversized tile).
 - **Photos**: monochrome at rest, colour + slow zoom on hover.
 
+### V4.3 — type scale, scroll feel, cursor (from review feedback)
+- **Type scale up** across the page: body 1.2rem, small body 1.05rem, lede
+  up to 1.45rem, section titles up to 4.6rem, sub-titles up to 2.5rem, mono
+  labels 12–13px, nav 15px, ledger claims 1.25rem.
+- **Scroll feel**: Lenis moved from a fixed-duration glide (which floats on
+  past the input) to frame-based lerp smoothing (`lerp: 0.09`) — crisp and
+  direct. Reveals changed from a plain fade to a focus-pull: blocks rise out
+  of a 12px blur; title words rise out of a mask with a slight rotate+blur.
+- **Cursor as light**: the ring is gone. A 7px cyan point tracks exactly and
+  becomes a 44px translucent disk over links and a thin I-beam over text; a
+  560px soft glow follows on a lazy spring and lights whatever it crosses
+  (`mix-blend-screen`). Over the cream section the point inverts to red.
+
 ## Verification status
 `npm ci`, `npm run lint`, `npm run build` and Playwright screenshots (desktop
 hero/mid-page) were green through the three.js/fonts/countup stage. A

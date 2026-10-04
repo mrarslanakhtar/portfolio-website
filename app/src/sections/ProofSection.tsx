@@ -78,11 +78,11 @@ export default function ProofSection() {
               <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-3 md:gap-8 items-baseline py-6 border-t border-[var(--hairline)]">
                 <div className="data-label text-cream/80">{r.platform}</div>
                 <div>
-                  <p className="text-cream text-[1.05rem]">{r.claim}</p>
+                  <p className="text-cream text-[1.25rem]">{r.claim}</p>
                   <p className="body-sm mt-1">{r.detail}</p>
                 </div>
                 {r.href && (
-                  <a href={r.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide whitespace-nowrap">
+                  <a href={r.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[13px] tracking-wide whitespace-nowrap">
                     {r.verify} <span aria-hidden="true">↗</span>
                   </a>
                 )}

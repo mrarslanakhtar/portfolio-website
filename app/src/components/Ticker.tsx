@@ -42,7 +42,7 @@ export default function Ticker() {
   const row = (hidden: boolean) => (
     <span className="inline-flex items-center" aria-hidden={hidden || undefined}>
       {ITEMS.map((item) => (
-        <span key={item} className="inline-flex items-center gap-6 pr-6 font-mono text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-cream/75">
+        <span key={item} className="inline-flex items-center gap-6 pr-6 font-mono text-[13px] md:text-[14px] tracking-[0.18em] uppercase text-cream/75">
           {item}
           <span className="h-1 w-1 rounded-full bg-cyan" aria-hidden="true" />
         </span>

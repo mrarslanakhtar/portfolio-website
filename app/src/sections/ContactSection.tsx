@@ -78,7 +78,7 @@ export default function ContactSection() {
                 className="group flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 py-4 border-t border-[var(--hairline)]"
               >
                 <span className="data-label">{c.label}</span>
-                <span className="font-mono text-[13px] text-cream/85 group-hover:text-cyan break-all sm:break-normal sm:text-right transition-[color,transform] motion-safe:group-hover:-translate-x-0.5">
+                <span className="font-mono text-[14px] text-cream/85 group-hover:text-cyan break-all sm:break-normal sm:text-right transition-[color,transform] motion-safe:group-hover:-translate-x-0.5">
                   {c.value}
                 </span>
               </m.a>
@@ -88,7 +88,7 @@ export default function ContactSection() {
             <m.div variants={rowVariants} className="data-label text-cream/70 mt-10 mb-2">Verify the record</m.div>
             <m.div variants={rowVariants} className="flex flex-wrap gap-x-6 gap-y-2 pt-2">
               {platforms.map((p) => (
-                <a key={p.label} href={p.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide">
+                <a key={p.label} href={p.href} target="_blank" rel="me noopener noreferrer" className="link-underline font-mono text-[13px] tracking-wide">
                   {p.label} <span aria-hidden="true">↗</span>
                 </a>
               ))}

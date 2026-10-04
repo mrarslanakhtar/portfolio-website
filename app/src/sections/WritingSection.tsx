@@ -117,7 +117,7 @@ export default function WritingSection() {
             title="Notes from the research."
             lede="Published breakdowns of SSO, IAM, and access-control failure modes — pulled live from Medium."
           />
-          <a href={MEDIUM_URL} target="_blank" rel="noopener noreferrer" className="link-underline font-mono text-[12px] tracking-wide pb-2">
+          <a href={MEDIUM_URL} target="_blank" rel="noopener noreferrer" className="link-underline font-mono text-[13px] tracking-wide pb-2">
             All essays <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -152,11 +152,11 @@ export default function WritingSection() {
                   <span>Medium</span>
                   {a.pubDate && <span>· {formatDate(a.pubDate)}</span>}
                 </div>
-                <h3 className="mt-4 font-display text-xl text-cream leading-snug group-hover:text-cyan transition-colors line-clamp-3">
+                <h3 className="mt-4 font-display text-2xl text-cream leading-snug group-hover:text-cyan transition-colors line-clamp-3">
                   {a.title}
                 </h3>
                 {a.excerpt && <p className="body-sm mt-3 line-clamp-3 flex-1">{a.excerpt}</p>}
-                <div className="mt-5 pt-4 border-t border-[var(--hairline)] font-mono text-[11px] tracking-wide text-stone-muted">
+                <div className="mt-5 pt-4 border-t border-[var(--hairline)] font-mono text-[12px] tracking-wide text-stone-muted">
                   {a.readingTime} min read
                 </div>
               </m.a>

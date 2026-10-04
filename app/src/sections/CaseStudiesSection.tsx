@@ -80,7 +80,7 @@ function SeverityTag({ severity }: { severity: 'Critical' | 'High' }) {
   const critical = severity === 'Critical'
   return (
     <span
-      className={`inline-flex items-center font-mono text-[11px] tracking-[0.14em] uppercase px-2.5 py-1 rounded-sm border ${
+      className={`inline-flex items-center font-mono text-[12px] tracking-[0.14em] uppercase px-2.5 py-1 rounded-sm border ${
         critical ? 'bg-cyan/10 text-cyan border-cyan/40' : 'text-brass border-brass/40'
       }`}
     >
@@ -145,7 +145,7 @@ export default function CaseStudiesSection() {
           {further.map((f, i) => (
             <ScrollRevealText key={f.program} mode="line" delay={i * 0.06}>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 py-4 border-t border-[var(--hairline)]">
-                <span className="font-display text-lg text-cream min-w-[8rem]">{f.program}</span>
+                <span className="font-display text-xl text-cream min-w-[8rem]">{f.program}</span>
                 <span className="data-label text-cream/70">{f.vulnClass}</span>
                 <span className="ml-auto"><SeverityTag severity={f.severity} /></span>
               </div>

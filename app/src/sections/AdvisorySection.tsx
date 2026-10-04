@@ -63,7 +63,7 @@ export default function AdvisorySection() {
             <div className="data-label text-cream/80">Where the work concentrates</div>
             <ul className="mt-6 space-y-4">
               {specialization.map((s) => (
-                <li key={s} className="flex items-start gap-3 text-cream text-[0.98rem] leading-relaxed">
+                <li key={s} className="flex items-start gap-3 text-cream text-[1.1rem] leading-relaxed">
                   <span aria-hidden="true" className="mt-2 h-1 w-4 bg-cyan/70 flex-shrink-0" />
                   <span>{s}</span>
                 </li>

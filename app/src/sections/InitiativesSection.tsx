@@ -19,7 +19,7 @@ const pakFocus = [
 
 function StatusTag({ children }: { children: string }) {
   return (
-    <span className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] uppercase text-brass">
+    <span className="inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.14em] uppercase text-brass">
       <span className="h-1.5 w-1.5 rounded-full bg-brass" aria-hidden="true" />
       {children}
     </span>
@@ -69,7 +69,7 @@ export default function InitiativesSection() {
               <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 border-t border-[var(--hairline)] pt-7">
                 {zenGuardGoals.map((g) => (
                   <div key={g.title}>
-                    <h4 className="font-sans text-cream text-[0.98rem] font-medium">{g.title}</h4>
+                    <h4 className="font-sans text-cream text-[1.1rem] font-medium">{g.title}</h4>
                     <p className="body-sm mt-1">{g.desc}</p>
                   </div>
                 ))}
@@ -79,7 +79,7 @@ export default function InitiativesSection() {
                 href="https://www.linkedin.com/company/zenguard-identity/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline mt-8 font-mono text-[12px] tracking-wide"
+                className="link-underline mt-8 font-mono text-[13px] tracking-wide"
               >
                 Follow ZenGuard <span aria-hidden="true">↗</span>
               </a>
@@ -105,7 +105,7 @@ export default function InitiativesSection() {
 
               <ul className="mt-6 space-y-3 border-t border-[var(--hairline)] pt-6">
                 {pakFocus.map((t) => (
-                  <li key={t} className="flex items-start gap-2.5 text-stone-muted text-[0.95rem] leading-relaxed">
+                  <li key={t} className="flex items-start gap-2.5 text-stone-muted text-[1.05rem] leading-relaxed">
                     <span aria-hidden="true" className="mt-2 h-1 w-1 rounded-full bg-cyan/60 flex-shrink-0" />
                     <span>{t}</span>
                   </li>

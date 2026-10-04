@@ -50,7 +50,7 @@ export default function FooterSection() {
               <span className="h-1.5 w-1.5 rounded-full bg-brass" aria-hidden="true" />
               Muhammad Arslan Akhtar
             </div>
-            <p className="mt-2 font-mono text-[12px] text-stone-muted tracking-wide">
+            <p className="mt-2 font-mono text-[13px] text-stone-muted tracking-wide">
               Offensive security research · SSO / IAM · Broken access control
             </p>
             <a href="mailto:mrarslan5156@gmail.com" className="link-underline mt-2 font-mono text-[13px] !text-cream/80 hover:!text-cyan">
@@ -66,7 +66,7 @@ export default function FooterSection() {
                 href={s.href}
                 target="_blank"
                 rel="me noopener noreferrer"
-                className="link-underline font-mono text-[12px] tracking-[0.08em] !text-stone-muted hover:!text-cyan !min-h-[44px]"
+                className="link-underline font-mono text-[13px] tracking-[0.08em] !text-stone-muted hover:!text-cyan !min-h-[44px]"
               >
                 {s.label}
               </a>
@@ -75,19 +75,19 @@ export default function FooterSection() {
 
           {/* Status + local time + back to top */}
           <div className="flex flex-col md:items-end gap-3">
-            <span className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] uppercase text-brass">
+            <span className="inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.12em] uppercase text-brass">
               <span className="h-1.5 w-1.5 rounded-full bg-brass" aria-hidden="true" />
               Open to advisory engagements
             </span>
             {time && (
-              <span className="font-mono text-[11px] tracking-[0.12em] uppercase text-stone-muted">
+              <span className="font-mono text-[12px] tracking-[0.12em] uppercase text-stone-muted">
                 Islamabad · {time} GMT+5
               </span>
             )}
             <button
               type="button"
               onClick={scrollToTop}
-              className="group inline-flex items-center gap-1.5 min-h-[44px] -my-2 font-mono text-[11px] tracking-[0.1em] uppercase text-stone-muted hover:text-cream transition-colors"
+              className="group inline-flex items-center gap-1.5 min-h-[44px] -my-2 font-mono text-[12px] tracking-[0.1em] uppercase text-stone-muted hover:text-cream transition-colors"
             >
               Back to top{' '}
               <span aria-hidden="true" className="inline-block transition-transform motion-safe:group-hover:-translate-y-0.5">
@@ -97,7 +97,7 @@ export default function FooterSection() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-[var(--hairline)] font-mono text-[11px] tracking-wide text-[var(--ink-faint)]">
+        <div className="mt-10 pt-6 border-t border-[var(--hairline)] font-mono text-[12px] tracking-wide text-[var(--ink-faint)]">
           © {new Date().getFullYear()} Muhammad Arslan Akhtar. All rights reserved.
         </div>
       </div>
